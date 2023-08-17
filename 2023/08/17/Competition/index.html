@@ -19,22 +19,21 @@
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     
     <meta name="description" content="">
-    <meta name="description" content="1. 相似矩阵1.1. 推导基底不同，向量的坐标值就不同：向量在空间中的位置是绝对的，而其坐标值却是相对的，坐标的取值依托于其所选取的基底。更直白的说就是，对于同一个向量，选取的基底不同，其所对应的坐标值就不同。 基底不同，描述向量线性变换的矩阵也不同：静态的向量，我们选取的基底不同，用于表示静态向量的坐标值就不同。如向量从某个空间中的位置 $P$ 移动到位置 $Q$ ，我们知道可以用矩阵来表示向">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2023/08/16/hello-world/index.html">
+    <meta property="og:type" content="article">
+<meta property="og:title" content="记第一次参加 Kaggle Data Science Competition">
+<meta property="og:url" content="http://example.com/2023/08/17/Competition/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1. 相似矩阵1.1. 推导基底不同，向量的坐标值就不同：向量在空间中的位置是绝对的，而其坐标值却是相对的，坐标的取值依托于其所选取的基底。更直白的说就是，对于同一个向量，选取的基底不同，其所对应的坐标值就不同。 基底不同，描述向量线性变换的矩阵也不同：静态的向量，我们选取的基底不同，用于表示静态向量的坐标值就不同。如向量从某个空间中的位置 $P$ 移动到位置 $Q$ ，我们知道可以用矩阵来表示向">
 <meta property="og:locale">
-<meta property="article:published_time" content="2023-08-16T07:44:52.720Z">
-<meta property="article:modified_time" content="2023-08-16T19:17:08.262Z">
+<meta property="article:published_time" content="2023-08-16T19:37:59.000Z">
+<meta property="article:modified_time" content="2023-08-16T19:40:25.672Z">
 <meta property="article:author" content="Timmy Giorno">
+<meta property="article:tag" content="Data Science, Artificial Intelligence, Medicine">
 <meta name="twitter:card" content="summary">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/favicon.ico">
     
-    <title>Hello World · Timmy&#39;s Personal Website</title>
+    <title>记第一次参加 Kaggle Data Science Competition · Timmy&#39;s Personal Website</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -260,7 +259,7 @@
                 <a href="/">Better Call Timmy！</a>
             </div>
             <div class="post-title header-element">
-                <a href="#" class="post-name">Hello World</a>
+                <a href="#" class="post-name">记第一次参加 Kaggle Data Science Competition</a>
             </div>
         </div>
     
@@ -306,7 +305,7 @@
         <h1 class="intro-title">
             <!-- 主页  -->
             
-                Hello World
+                记第一次参加 Kaggle Data Science Competition
             <!-- 404 -->
             
         </h1>
@@ -326,6 +325,8 @@
                     <div class= post-intro-tags >
     
     
+        <a class="post-tag" href="javascript:void(0);" data-tags="Data Science, Artificial Intelligence, Medicine">Data Science, Artificial Intelligence, Medicine</a>
+    
 </div>
 
                 
@@ -334,7 +335,7 @@
                 <div class="post-intro-meta">
                     <!-- 撰写日期 -->
                     <span class="iconfont-archer post-intro-calander">&#xe676;</span>
-                    <span class="post-intro-time">2023/08/16</span>
+                    <span class="post-intro-time">2023/08/17</span>
                     <!-- busuanzi -->
                     
                         <span id="busuanzi_container_page_pv" class="busuanzi-pv">
@@ -489,91 +490,15 @@
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <h2 id="1-相似矩阵"><a href="#1-相似矩阵" class="headerlink" title="1. 相似矩阵"></a>1. 相似矩阵</h2><h4 id="1-1-推导"><a href="#1-1-推导" class="headerlink" title="1.1. 推导"></a>1.1. 推导</h4><p><strong>基底不同，向量的坐标值就不同</strong>：向量在空间中的位置是绝对的，而其坐标值却是相对的，坐标的取值依托于其所选取的基底。更直白的说就是，对于同一个向量，选取的基底不同，其所对应的坐标值就不同。</p>
-<p><strong>基底不同，描述向量线性变换的矩阵也不同</strong>：静态的向量，我们选取的基底不同，用于表示静态向量的坐标值就不同。如向量从某个空间中的位置 $P$ 移动到位置 $Q$ ，我们知道可以用矩阵来表示向量空间 $Q$ 位置的改变，但如果我们选取的基底不同，同一个运动在不同基底下，则对应的矩阵表示也是不同的。</p>
-<p>针对指定向量的同一个空间变换，用来在不同基底下进行描述的不同矩阵，彼此之间称之为<strong>相似矩阵</strong>。相似矩阵所表示的线性变换，彼此之间称之为相似变换。</p>
-<p>在基底 $\left(e_1, e_2\right)$ 下，坐标为 $x$ 的向量通过矩阵 $A$ 完成了线性变换，线性变换后的坐标为 $x^{\prime}$ ，我们通过矩阵 $P$ ，将向量变换到基底 $\left(e_1^{\prime}, e_2^{\prime}\right)$ 下的坐标表示，记作 $P x$ 。这时在新的基底下，用来表示我们上面同一个空间变换的是另一个矩阵 $B$ ，即基底 $\left(e_1^{\prime}, e_2^{\prime}\right)$ 下变换后的目标坐标为 $B P x$ ，最终我们还是需要在原基底坐标系下讨论和比较问题，因此我们再次把坐标从基底 $\left(e_1^{\prime}, e_2^{\prime}\right)$ 变回到 $\left(e_1, e_2\right)$ 下，这显然是一个逆变换，即左乘一个逆矩阵 $P^{-1}$ ，因此和最初直接用矩阵 $A$ 变换殊途同归。即，矩阵变换$A=P^{-1} B P$ ，其中矩阵 $A$ 和 $B$ 就是相似矩阵，表示了向量在两个基底 $\left(e_1, e_2\right)$ 和 $\left(e_1^{\prime}, e_2^{\prime}\right)$ 下的相似变换。</p>
-<p>我们假设讨论的前提是：在基底 $\left(e_1, e_2\right)$ 下，向量在矩阵 $A$ 的作用下由坐标 $x$ 变成坐标 $y$ ，在基底 $\left(e_1^{\prime}, e_2^{\prime}\right)$ 下，向量在矩阵 $B$ 的作用下由坐标 $x^{\prime}$ 变成坐标 $y^{\prime}$ ，同时 $x^{\prime}=P x$ 。在基底 $\left(e_1, e_2\right)$ 下，向量表示为 $a e_i+b e_j$ ，其坐标为 $x=\left[\begin{array}{l}a \ b\end{array}\right]$ ，如果在基底 $\left(e_1^{\prime}, e_2^{\prime}\right)$ 下坐标该如何表示? 我们假设两组基底的线性关系如下：$e_i=c e_i^{\prime}+d e_j^{\prime} ， e_j=f e_i^{\prime}+g e_j^{\prime}$ ，就可以很容易的做一个基底变换:<br>在基底 $\left(e_1^{\prime}, e_2^{\prime}\right)$ 下，向量表示为:</p>
-<script type="math/tex; mode=display">
-a e_i+b e_j=a\left(c e_i^{\prime}+d e_j^{\prime}\right)+b\left(f e_i^{\prime}+g e_j^{\prime}\right)=(a c+b f) e_i^{\prime}+(a d+b g) e_j^{\prime} \text { 。 }</script><p>其坐标为: $x^{\prime}=\left[\begin{array}{l}a c+b f \ a d+b g\end{array}\right]$ ，坐标可以分解成: $x^{\prime}=\left[\begin{array}{ll}c &amp; f \ d &amp; g\end{array}\right]\left[\begin{array}{l}a \ b\end{array}\right]$ ，即 $x^{\prime}=\left[\begin{array}{ll}c &amp; f \ d &amp; g\end{array}\right] x$ ，那么 $P$ 就得出来了， $P=\left[\begin{array}{ll}c &amp; f \ d &amp; g\end{array}\right]$ ，与两组基底之间的线性关系是完全对应的。</p>
-<h4 id="1-2-用途与计算"><a href="#1-2-用途与计算" class="headerlink" title="1.2. 用途与计算"></a>1.2. 用途与计算</h4><p>对于一个描述向量空间变换的矩阵而言，我们可以选择一个最佳基底，使得我们可以用一个最佳矩阵来描述某一个向量空间变换，这个空间变换就是<strong>对角矩阵对应的变换</strong>：</p>
-<ul>
-<li>一个 $n$ 维列向量在 $n$ 阶对角矩阵的作用下，其线性变换的方式仅仅反映在各个维度轴向上的<strong>拉伸</strong>，而不对应<strong>平移</strong>或者<strong>旋转</strong>。</li>
-<li>在连续的线性变换上，对角矩阵易于计算。<script type="math/tex; mode=display">A^n=\left[\begin{array}{lll}
-a_1 & & \\
-& a_2 & \\
-& & a_3
-\end{array}\right]^n=\left[\begin{array}{lll}
-a_1^n & & \\
-& a_2^n & \\
-& & a_3^n
-\end{array}\right]</script>对于一个一般的方阵，我们应该尝试利用本节所讲的，找到一个可逆矩阵 $P$ ，使得 $P^{-1} A P=\Lambda$ ， 满足 $\Lambda=\operatorname{diag}\left(\lambda_1, \lambda_2, \ldots, \lambda_n\right)$ ，就完成了我们的对角化方法，找到了我们的最佳矩阵。我们的构造方法如下：</li>
-</ul>
-<p>令 $P=\left[\begin{array}{llll}p_1 &amp; p_2 &amp; \ldots &amp; p_n\end{array}\right]$ ，即 $n$ 个 $n$ 维列向量的横向排列。针对 $P^{-1} A P=\Lambda$ 的表达式，两边同时左乘矩阵 $P$ ，则有: $A P=P \Lambda$ ，我们进一步利用完整形式展开:</p>
-<script type="math/tex; mode=display">
-A\left[p_1, p_2, \ldots, p_n\right]=\left[p_1, p_2, \ldots, p_n\right]\left[\begin{array}{llll}
-\lambda_1 & & & \\
-& \lambda_2 & & \\
-& & \ldots & \\
-& & & \lambda_n
-\end{array}\right]</script><p>最终有: $\left[A p_1, A p_2, \ldots, A p_n\right]=\left[\lambda_1 p_1, \lambda_2 p_2, \ldots, \lambda_n p_n\right]$ 。<br>看到这里，就豁然开朗了，为了上面这个等式能成立，就必须让左右两边的向量在每个维度上分别 相等。即 $[A p_1=\lambda_1 p_1 ， A p_2=\lambda_2 p_2 ， \cdots ， A p_n=\lambda_n p_n]$ 。</p>
-<blockquote>
-<p>若 $x_1 ， x_2$ 是对称矩阵 $A$ 的两个特征向量，即 $A x_1=\lambda_1 x_1 ， A x_2=\lambda_2 x_2$，如果 $\lambda_1 \neq \lambda_2$ ，则有 $x_1^T x_2=0$。</p>
-<p>  <strong>证明</strong>:<br>  设 $z=x_1^T A x_2$ ， 因为 $z$ 是标量，所以有 $z^T=z$ ，即 $x_2^T A^T x_1=x_1^T A x_2$<br>  因为 $A$ 是对称矩阵，所以 $A^T=A$ ，所以有 $x_2^T A x_1=x_2^T A^T x_1=x_1^T A x_2$</p>
-<script type="math/tex; mode=display">
-\begin{aligned}
-& x_1^T A x_2=x_1^T \lambda_2 x_2=\lambda_2 x_1^T x_2 \\
-& x_2^T A x_1=x_2^T \lambda_1 x_1=\lambda_1 x_2^T x_1=\lambda_1 x_1^T x_2
-\end{aligned}</script><p>  又 $z=z^T$ ，所以有 $\lambda_1 x_1^T x_2=\lambda_2 x_1^T x_2$ 即 $\lambda_1 x_1^T x_2-\lambda_2 x_1^T x_2=\left(\lambda_1-\lambda_2\right) x_1^T x_2=0$<br>  因为 $\lambda_1 \neq \lambda_2$ ，所以有 $x_1^T x_2=0$，所以对称矩阵特征值不等的特征向量正交。</p>
-</blockquote>
-<hr>
-<h2 id="2-矩阵的特征值"><a href="#2-矩阵的特征值" class="headerlink" title="2. 矩阵的特征值"></a>2. 矩阵的特征值</h2><p>从线性代数的角度出发，如果把矩阵看作 $n$ 维空间下的一个线性变换，这个变换有很多的变换方向，我们通过特征值分解得到的前 $N$ 个特征向量，那么就对应了这个矩阵最主要的 $N$ 个变化方向。</p>
-<ul>
-<li>如果把<strong>矩阵看作是位移</strong>，那么<strong>特征值 = 位移的速度，特征向量 = 位移的方向</strong>。</li>
-<li><strong>特征向量在一个矩阵的作用下作伸缩运动，伸缩的幅度由特征值确定</strong>。特征值大于1，所有属于此特征值的特征向量变长；特征值属于 $(0, 1)$，特征向量缩短；特征值小于 $0$，特征向量则反向延长。</li>
-</ul>
-<p>我们都知道线性代数中，左乘一个矩阵是对应着行变换，右乘一个矩阵对应列变换 $a$ ，其实际的作 用也就是对常规坐标系进行了迁移。那么，对于在普通二维坐标系下的向量 $X$ ，它在矩阵 $A$ 描述空间中的表示与自己单纯的进行拉伸或者缩放的效果一致，满足这种特殊性的 $X$ 就是特征矩 阵 $a$ ，对应的拉伸量 $\lambda$ 就是特征值。</p>
-<p>也可以这样理解：</p>
-<ul>
-<li>矩阵乘法即 <strong>线性变换</strong> —— 对向量进行旋转和长度伸缩，效果与函数相同；</li>
-<li>特征向量指向只缩放不旋转的方向；</li>
-<li>特征值即缩放因子；</li>
-<li>旋转矩阵无实数特征向量和特征值。</li>
-</ul>
-<hr>
-<h2 id="3-矩阵的求导"><a href="#3-矩阵的求导" class="headerlink" title="3. 矩阵的求导"></a>3. 矩阵的求导</h2><p>对于</p>
-<script type="math/tex; mode=display">
-f(\boldsymbol{x}), \boldsymbol{x}=\left[x_1, x_2, \cdots, x_n\right]^T</script><p>我们采用这样的形式：</p>
-<script type="math/tex; mode=display">
-\nabla_{\boldsymbol{x}} f(\boldsymbol{x})=\frac{\partial f(\boldsymbol{x})}{\partial \boldsymbol{x}}=\left[\frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \cdots, \frac{\partial f}{\partial x_n}\right]^T</script><h4 id="3-1-基本法则"><a href="#3-1-基本法则" class="headerlink" title="3.1. 基本法则"></a>3.1. 基本法则</h4><ol>
-<li><script type="math/tex; mode=display">
-\frac{\partial c}{\partial \boldsymbol{x}}=\mathbf{0}_{n \times 1}</script></li>
-<li><script type="math/tex; mode=display">
-\frac{\partial\left[c_1 f(\boldsymbol{x})+c_2 g(\boldsymbol{x})\right]}{\partial \boldsymbol{x}}=c_1 \frac{\partial f(\boldsymbol{x})}{\partial \boldsymbol{x}}+c_2 \frac{\partial g(\boldsymbol{x})}{\partial \boldsymbol{x}}</script></li>
-<li><script type="math/tex; mode=display">
-\frac{\partial[f(\boldsymbol{x}) g(\boldsymbol{x})]}{\partial \boldsymbol{x}}=\frac{\partial f(\boldsymbol{x})}{\partial \boldsymbol{x}} g(\boldsymbol{x})+f(\boldsymbol{x}) \frac{\partial g(\boldsymbol{x})}{\partial \boldsymbol{x}}</script></li>
-<li><script type="math/tex; mode=display">
-\frac{\partial\left[\frac{f(\boldsymbol{x})}{g(\boldsymbol{x})}\right]}{\partial \boldsymbol{x}}=\frac{1}{g^2(\boldsymbol{x})}\left[\frac{\partial f(\boldsymbol{x})}{\partial \boldsymbol{x}} g(\boldsymbol{x})-f(\boldsymbol{x}) \frac{\partial g(\boldsymbol{x})}{\partial \boldsymbol{x}}\right]</script><h4 id="3-2-对向量求导的衍生公式"><a href="#3-2-对向量求导的衍生公式" class="headerlink" title="3.2. 对向量求导的衍生公式"></a>3.2. 对向量求导的衍生公式</h4></li>
-<li><script type="math/tex; mode=display">
-\frac{\partial\left(\boldsymbol{x}^T \boldsymbol{a}\right)}{\partial \boldsymbol{x}}=\frac{\partial\left(\boldsymbol{a}^T \boldsymbol{x}\right)}{\partial \boldsymbol{x}}=\boldsymbol{a}</script></li>
-<li><script type="math/tex; mode=display">
-\frac{\partial\left(\boldsymbol{x}^T \boldsymbol{x}\right)}{\partial \boldsymbol{x}}=2 \boldsymbol{x}</script></li>
-<li><p>（证明时只需要注意到 $\boldsymbol{x}^T \boldsymbol{A}\boldsymbol{x}=\sum_{i=1}^{n}\sum_{j=1}^{n}a_{ij}x_ix_j$ 再拆开后分组即可 ）</p>
-<script type="math/tex; mode=display">
-\frac{\partial\left(\boldsymbol{x}^T \boldsymbol{A} \boldsymbol{x}\right)}{\partial \boldsymbol{x}}=\boldsymbol{A} \boldsymbol{x}+\boldsymbol{A}^T \boldsymbol{x}</script></li>
-<li><p>（其中 $\boldsymbol{a}, \boldsymbol{b}$ 为常数向量， $\boldsymbol{a}=\left(a_1, a_2, \cdots, a_n\right)^T, \boldsymbol{b}=\left(b_1, b_2, \cdots, b_n\right)^T$ 。）</p>
-<script type="math/tex; mode=display">
-\frac{\partial\left(\boldsymbol{a}^T \boldsymbol{x} \boldsymbol{x}^T \boldsymbol{b}\right)}{\partial \boldsymbol{x}}=\boldsymbol{a} \boldsymbol{b}^T \boldsymbol{x}+\boldsymbol{b} \boldsymbol{a}^T \boldsymbol{x}</script></li>
-</ol>
-<h2 id="4-矩阵的奇异值分解"><a href="#4-矩阵的奇异值分解" class="headerlink" title="4. 矩阵的奇异值分解"></a>4. 矩阵的奇异值分解</h2>
+        
     </article>
     <!-- license -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="http://example.com">Timmy Giorno</a>
-            <p>原文链接：<a href="http://example.com/2023/08/16/hello-world/">http://example.com/2023/08/16/hello-world/</a>
-            <p>发表日期：<a href="http://example.com/2023/08/16/hello-world/">August 16th 2023, 3:44:52 pm</a>
-            <p>更新日期：<a href="http://example.com/2023/08/16/hello-world/">August 17th 2023, 3:17:08 am</a>
+            <p>原文链接：<a href="http://example.com/2023/08/17/Competition/">http://example.com/2023/08/17/Competition/</a>
+            <p>发表日期：<a href="http://example.com/2023/08/17/Competition/">August 17th 2023, 3:37:59 am</a>
+            <p>更新日期：<a href="http://example.com/2023/08/17/Competition/">August 17th 2023, 3:40:25 am</a>
             <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -582,12 +507,17 @@ f(\boldsymbol{x}), \boldsymbol{x}=\left[x_1, x_2, \cdots, x_n\right]^T</script><
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href="/2023/08/17/Competition/" title="记第一次参加 Kaggle Data Science Competition">
-                    <div class="nextTitle">记第一次参加 Kaggle Data Science Competition</div>
+                <a href="/2023/08/17/20230817-%E8%B0%83%E6%80%A7%E6%94%AF%E6%9F%B1%E4%B8%8E%E4%B8%BB%E5%B1%9E%E5%92%8C%E5%BC%A6/" title="20230817-调性支柱与主属和弦">
+                    <div class="nextTitle">20230817-调性支柱与主属和弦</div>
                 </a>
             
         </li>
         <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2023/08/16/hello-world/" title="Hello World">
+                    <div class="prevTitle">Hello World</div>
+                </a>
             
         </li>
     </ul>
@@ -735,7 +665,7 @@ f(\boldsymbol{x}), \boldsymbol{x}=\left[x_1, x_2, \cdots, x_n\right]^T</script><
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%9B%B8%E4%BC%BC%E7%9F%A9%E9%98%B5"><span class="toc-number">1.</span> <span class="toc-text">1. 相似矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E6%8E%A8%E5%AF%BC"><span class="toc-number">1.0.1.</span> <span class="toc-text">1.1. 推导</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-%E7%94%A8%E9%80%94%E4%B8%8E%E8%AE%A1%E7%AE%97"><span class="toc-number">1.0.2.</span> <span class="toc-text">1.2. 用途与计算</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%9F%A9%E9%98%B5%E7%9A%84%E7%89%B9%E5%BE%81%E5%80%BC"><span class="toc-number">2.</span> <span class="toc-text">2. 矩阵的特征值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%9F%A9%E9%98%B5%E7%9A%84%E6%B1%82%E5%AF%BC"><span class="toc-number">3.</span> <span class="toc-text">3. 矩阵的求导</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E5%9F%BA%E6%9C%AC%E6%B3%95%E5%88%99"><span class="toc-number">3.0.1.</span> <span class="toc-text">3.1. 基本法则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E5%AF%B9%E5%90%91%E9%87%8F%E6%B1%82%E5%AF%BC%E7%9A%84%E8%A1%8D%E7%94%9F%E5%85%AC%E5%BC%8F"><span class="toc-number">3.0.2.</span> <span class="toc-text">3.2. 对向量求导的衍生公式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%9F%A9%E9%98%B5%E7%9A%84%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3"><span class="toc-number">4.</span> <span class="toc-text">4. 矩阵的奇异值分解</span></a></li></ol>
+                
             </div>
         
         <!-- sidebar -->
