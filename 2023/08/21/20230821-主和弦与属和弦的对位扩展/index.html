@@ -19,18 +19,38 @@
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     
     <meta name="description" content="">
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2023/08/index.html">
+    <meta name="description" content="Steven Laitz 的 The Complete Musician 的学习笔记与一些音乐学习上遇到的知识总结。Study notes on Steven Laitz’s The Complete Musician and a summary of the knowledge encountered in music learning.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="20230821-主和弦与属和弦的对位扩展">
+<meta property="og:url" content="http://example.com/2023/08/21/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Steven Laitz 的 The Complete Musician 的学习笔记与一些音乐学习上遇到的知识总结。Study notes on Steven Laitz’s The Complete Musician and a summary of the knowledge encountered in music learning.">
 <meta property="og:locale">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230819162055.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230819162618.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230819163654.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230820130643.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230820143637.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230820144818.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230820145331.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230820151219.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230821142636.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230821144138.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230821144442.png">
+<meta property="og:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230821144935.png">
+<meta property="article:published_time" content="2023-08-21T06:54:49.000Z">
+<meta property="article:modified_time" content="2023-08-21T07:28:04.904Z">
 <meta property="article:author" content="Timmy Giorno">
+<meta property="article:tag" content="Music">
+<meta property="article:tag" content="Music Theory">
+<meta property="article:tag" content="Harmonics">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/IMAGES/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/Pasted%20image%2020230819162055.png">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/">
     
-    <title>Timmy&#39;s Personal Website</title>
+    <title>20230821-主和弦与属和弦的对位扩展 · Timmy&#39;s Personal Website</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -218,6 +238,8 @@
         }
     </script>
     
+        <body class="post-body">
+    
         <!-- header -->
         <header class="header header-mobile">
     <!-- top read progress line -->
@@ -247,6 +269,17 @@
     </div>
     <!-- toggle banner for post layout -->
     
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">Better Call Timmy！</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">20230821-主和弦与属和弦的对位扩展</a>
+            </div>
+        </div>
+    
 </header>
 
         <!-- fixed footer -->
@@ -273,24 +306,84 @@
 
 
 
+    height:50vh;
+
 ">
     
     <!-- 主页  -->
     
+        
+    <!-- 404页  -->
+    
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.png)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+                20230821-主和弦与属和弦的对位扩展
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+                
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Music">Music</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Music Theory">Music Theory</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Harmonics">Harmonics</a>
+    
+</div>
+
+                
+                <!-- 文章字数统计 -->
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.4k</span>阅读时长: <span class="post-count reading-time">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2023/08/21</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -420,236 +513,118 @@
 
             <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
             <div class="container container-unloaded">
-                <main class="main index-page">
-    
-        
-        
-        
-        
-            
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2023/08/21/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/">
-                
-                <span class="abstract-title-text">20230821-主和弦与属和弦的对位扩展</span>
-            </a>
-            <div class="abstract-content">
-                <p>Steven Laitz 的 The Complete Musician 的学习笔记与一些音乐学习上遇到的知识总结。<br>Study notes on Steven Laitz’s The Complete Musician and a summary of the knowledge encountered in music learning.<br>
-            </div>
-            <!-- read more -->
-            
-                <div class="abstract-read-more-button">
-                    <a href="/2023/08/21/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/">
-                        <span style="margin-right: 0.2rem;">阅读全文</span>
-                        <i class="fas fa-angle-right"></i>
-                    </a>
-                </div>
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2023/08/21">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2023/08/21</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Music">Music</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Music Theory">Music Theory</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Harmonics">Harmonics</a>
-    
-</div>
+                <main class="main post-page">
+    <article class="article-entry">
+        <p>Steven Laitz 的 The Complete Musician 的学习笔记与一些音乐学习上遇到的知识总结。<br>Study notes on Steven Laitz’s The Complete Musician and a summary of the knowledge encountered in music learning.<br><span id="more"></span></p>
+<h2 id="低音中的和弦跳进"><a href="#低音中的和弦跳进" class="headerlink" title="低音中的和弦跳进"></a>低音中的和弦跳进</h2><p>我们通过诠释乐句中的主属变化来探究主三和弦与属三和弦是如何以转位形式丰富了音乐的结构。由于转位三和弦的稳定性要逊于原位，因而它们能给予和声更多的细微差别。而且通过转位，作曲家能将低音演变成旋律。</p>
+<p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230819162055.png" alt=""></p>
+<p>原位与第一转位三和弦时常能互换，第二转位三和弦却不能有效地替换原位或第一转位，因为原位与第一转位中不协和的四音都是在低音的上方。三和弦第二转位的功能迥然不同于其原位及第一转位。</p>
+<p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230819162618.png" alt=""></p>
+<p>上图为 Brahms 为《受伤的男孩》所配的和弦。勃拉姆斯的和声配置限制在主和弦与属和弦上，但并非仅仅只有原位三和弦，他还用到了它们的第一转位。这种外表不起眼的变化却从实际听觉上改变了曲子, 现在使其变得轻快并强力地通往半终止。</p>
+<ul>
+<li>在 Brahms 的和弦编排中，所有的强拍都是六度和十度（只有半终止的五度是一个例外）。</li>
+</ul>
+<p>第一转位和弦使乐句充满活力，因为它们给予了低音声部更多的旋律性。简要地看看勃拉姆斯配置和声的最低声部, 像旋律一样的拱形，从 $\mathrm{C}$ 到 $\mathrm{E}$ 的六度下行，然后是八度上行到半终止。因此，低音在这里具有多重角色，将和声功能与旋律趣味融为一体，使其与高音声部相呼应，并与其构成基本的对位控制各要素的流动。</p>
+<p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230819163654.png" alt=""></p>
+<p>再查看音高的互动形成的单音交换。和弦的原位与第一转位之间的运动有点类似于重新排列和声的几个上声部。换言之，这里的和声并没有改变，而是这一和声的扩展或者说延伸。这也能出现在低音中，它直接导致这种变化更富有戏剧性。通常，延伸扩展主和声用其第一转位要多于用第一转位延伸属和声。</p>
+<p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230820130643.png" alt=""></p>
+<p>A1 中除了单音交换外（其低音 $\hat{1}$ 级上行到 $\hat{3}$ 级的进行是高音声部 $\hat{3}$ 级到 $\hat{1}$ 级下行的镜像），<strong>还在 $\mathrm{I}$ 与 $\mathrm{V}$ 之间用 $\mathrm{I}_6$ 将五度的大跳分解为两个三度的小跳。</strong> 低音中的 $\hat{3}$ 级也必然是作为主三和弦的成分出现，由于其极不稳定的性质，转位三和弦与和声序进中起相对稳定支柱作用的原位 $\mathrm{I}, \mathrm{V}$ 和弦恰好形成了对比。通过单音交换所保留下来的音高清楚地表明单一和声，即主和弦，能由和弦大跳得到扩展延伸。</p>
+<hr>
+<h2 id="低音中的邻音和弦"><a href="#低音中的邻音和弦" class="headerlink" title="低音中的邻音和弦"></a>低音中的邻音和弦</h2><p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230820143637.png" alt=""></p>
+<ul>
+<li>在 $\mathrm{V}_6$ 扩展延伸 $\mathrm{I}$ 时，通常 $\hat{5}$ 级是突显在高音声部，因为这个共同音确定了它们的亲缘关系。此外，还增强了音乐的戏剧性，因为属和声第一转位的六度音动摇了外声部主和弦纯五度（低音是 $\hat{1}$ 级而高音声部是 $\hat{5}$ 级）的稳定性, 贝多芬在其第七交响曲慢乐章的第一句音响中就利用了这种效果（如上图 A）。</li>
+<li>高音声部从 $\hat{3}$ 级音开始，将低音接入其自身的邻音进行，会形成一种完全不同的效果；这种结果致使平行十度的两线条在行进中产生轻微的摇摆。舒伯特就曾用这种方式作为一些慢乐章的开始（如上图 B）。</li>
+</ul>
+<p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230820144818.png" alt=""></p>
+<p>$\mathrm{V}_6$ 和弦也能用作不完整邻音和弦。最常见的不完整邻音和弦类型出现于 $\mathrm{I}_6$ 和弦后紧接 $\mathrm{V}_6$  和弦，然后返回到 $\mathrm{I}_6$ 和弦的时候。在小调中, 从 $\hat{3}$ 级到 $\hat{7}$ 级的低音大跳进构成了一个减四度，但从两个因素考虑 —— 时间非常短暂以及导音立刻得到了解决 —— 这种不协和跳进是允许的。</p>
+<hr>
+<h2 id="和声的二等级分析"><a href="#和声的二等级分析" class="headerlink" title="和声的二等级分析"></a>和声的二等级分析</h2><p>我们已经将和声分析看作是一种二级处理过程。其第一级（或称之为第一等级分析（first-level analysis））是用罗马数字鉴别各和声音响；像这样的标注是代表序进的描述性（descriptive）分析。而第二级 —— 或称之为第二等级分析（second-level analysis）—— 所反映的是和声音响的功能性。有些和声是结构性的，而有些和声却是装饰性的。结构性和声是进行性（progressional）的，因为它们标示了从一个和声功能到另一个的运动；结构性和声在第二等级分析中会被保留其罗马数字。次要的和声有助于拓展或延伸一个单独的结构性和声。我们将这类和声称之为延伸（prolongational）。在第二等级分析中，延伸和弦是由旋律功能来标注。</p>
+<p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230820145331.png" alt=""></p>
+<hr>
+<h2 id="低音中的经过音"><a href="#低音中的经过音" class="headerlink" title="低音中的经过音"></a>低音中的经过音</h2><p>迄今为止我们已看到对位扩展所采用的是邻音 $\left(\mathrm{I}-\mathrm{V}_6-\mathrm{I}\right)$ 与和弦跳进 $\left(\mathrm{I}-\mathrm{I}_6\right.$ 与 $\left.\mathrm{V}-\mathrm{V}_6\right)$。第三种对位进行，经过音，是通过在 $\mathrm{I}$ 与 $\mathrm{I}_6$ 和弦之间插入一个低音经过音来扩展主和弦。</p>
+<p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230820151219.png" alt=""></p>
+<p>上图为亨德尔一段长笛奏鸣曲乐章中的开始。主和弦的各低音是用三和弦的原位与第一转位配置的和声；此外，亨德尔为低音与高音声部经过音 ${ }^ \mathrm{C}$ 所配和声称之为经过音和弦。经过和弦也常常是落在节奏的弱拍或拍子的弱位上。<br>我们还要注意到亨德尔这个例子中的第 3 小节, 主和声首次出现是在拍子的弱位上，夹在两个属和声之间并且所配和声是长笛中一个弱拍经过音（我们将这个主和弦解释为一个不完整的邻音，它有助于扩展在第 2 小节的第二拍上起控制作用的属和声, 其强势一直保留到这个片段的结尾处主和弦在强拍上出现为止）。甚至退一步说，我们可以将这个扩展的 $\mathrm{V}_6$ 和弦确定为邻音功能，将其两侧看作是原位主和弦的开始与结束。</p>
+<p><strong>为什么是第一转位的 $\mathrm{vii}^{\circ}$ —— 而不是原位的 $\mathrm{ii}$ —— 作为低音经过音 $\hat{2}$ 级和声配置的首选？</strong><br>由于 $\mathrm{ii}$ 是一个强势和声，能偏离对主和弦的注意，因此它不是一个合适的对位和弦。相比而言 $\mathrm{vii}_6^{\circ}$ 是一个最佳的经过和弦，因为：</p>
+<ul>
+<li>它不稳定 —— 它是一个减和弦音响。</li>
+<li>它与 $\mathrm{V}$ 和 $\mathrm{V}_7$ 享有共同音，而这两个和弦是很有效果的经过。我们称 $\mathrm{vii}_6^{\circ}$ 为 <strong>属和弦的替代</strong>。</li>
+<li>由于是第一转位，因此更有可能成为一个对位和弦。</li>
+</ul>
+<hr>
+<h2 id="用低音琶音拓展主和弦"><a href="#用低音琶音拓展主和弦" class="headerlink" title="用低音琶音拓展主和弦"></a>用低音琶音拓展主和弦</h2><p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230821142636.png" alt=""></p>
+<p>我们知道 $\mathrm{I}_6$ 扩展了 $\mathrm{I}$，通过低音作三度上行。有时，出于戏剧性效果的考虑，低音是从  $\mathrm{I}$ 到  $\mathrm{I}_6$ 的六度下行，如例上图所示。注意，这种大幅度的单音交换所产生的过程：高音声部采用的是经过音（$\hat{3}$ 级 $-\hat{2}$ 级 $-\hat{1}$ 级），而低音则是和弦大跳或琶音（$\hat{1}$ 级 $-\hat{5}$ 级 $-\hat{3}$ 级），所产生的 $\mathrm{V}$ 和弦是从属于那些环绕的主和弦。</p>
+<p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230821144138.png" alt=""></p>
+<p>这种六度的大跳进往往由添加的一个新和弦 $\mathrm{IV}_6$ 分解成 $\hat{1}$ 级 $-\hat{6}$ 级 $-\hat{3}$ 级的琶音。注意，在高音声部中的级进上行，$\hat{3}$ 级 $-\hat{4}$ 级 $-\hat{5}$ 级；$\hat{4}$ 级到 $\hat{5}$ 级的这种上行与比较常见的下行，如属和声中不协和的七音形成重要的对比。在写作 $\mathrm{IV}_6$ 和弦通常是重叠 $\hat{1}$ 级，但也可根据需要重叠和弦的任一成分音，因为在写作中声部进行的平滑流畅要优先于重叠音的考虑。</p>
+<ul>
+<li>主观感受：一种彷徨，失落的气氛，不如 $\mathrm{I}_6-\mathrm{V}_7-\mathrm{I}$ 这样的进行。 </li>
+</ul>
+<hr>
+<h2 id="用经过音拓展属和弦"><a href="#用经过音拓展属和弦" class="headerlink" title="用经过音拓展属和弦"></a>用经过音拓展属和弦</h2><p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230821144442.png" alt=""><br>正如可以由经过 $\mathrm{vii}_6^\circ$ 和弦扩展主和弦一样，我们也可用 $\mathrm{IV}_6$ 和弦的第一转位扩展属音和声。</p>
+<p>$\mathrm{V}-\mathrm{IV}_6-\mathrm{V}_6$ 的声部进行：</p>
+<ul>
+<li>小调中，$\hat{6}$ 级音必须升高以避免在 $\hat{6}$ 级与 $\hat{7}$ 级音之间形成增二度 —— 这就产生了一个大 $\mathrm{IV}_6$ 和弦。</li>
+<li>$\mathrm{IV}_6-\mathrm{V}_6$ 进行中的上方声各声部要与低音成反向进行，以避免平行五度与八度。</li>
+</ul>
+<p><img src="/IMAGES/20230821-主和弦与属和弦的对位扩展/Pasted%20image%2020230821144935.png" alt=""></p>
 
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
+    </article>
+    <!-- license -->
     
-        
-        
-        
-        
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://example.com">Timmy Giorno</a>
+            <p>原文链接：<a href="http://example.com/2023/08/21/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/">http://example.com/2023/08/21/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/</a>
+            <p>发表日期：<a href="http://example.com/2023/08/21/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/">August 21st 2023, 2:54:49 pm</a>
+            <p>更新日期：<a href="http://example.com/2023/08/21/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/">August 21st 2023, 3:28:04 pm</a>
+            <p>版权声明：本文采用 <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a> 进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
             
+        </li>
+        <li class="previous">
             
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2023/08/19/20230819-%E6%97%8B%E5%BE%8B%E8%8A%82%E5%A5%8F%E5%AF%B9%E5%92%8C%E5%A3%B0%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%8C%E5%B1%9E%E4%B8%83%E5%92%8C%E5%BC%A6/">
-                
-                <span class="abstract-title-text">20230819-旋律节奏对和声的影响，属七和弦</span>
-            </a>
-            <div class="abstract-content">
-                <p>Steven Laitz 的 The Complete Musician 的学习笔记与一些音乐学习上遇到的知识总结。<br>Study notes on Steven Laitz’s The Complete Musician and a summary of the knowledge encountered in music learning.<br>
-            </div>
-            <!-- read more -->
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2023/08/19/20230819-%E6%97%8B%E5%BE%8B%E8%8A%82%E5%A5%8F%E5%AF%B9%E5%92%8C%E5%A3%B0%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%8C%E5%B1%9E%E4%B8%83%E5%92%8C%E5%BC%A6/" title="20230819-旋律节奏对和声的影响，属七和弦">
+                    <div class="prevTitle">20230819-旋律节奏对和声的影响，属七和弦</div>
+                </a>
             
-                <div class="abstract-read-more-button">
-                    <a href="/2023/08/19/20230819-%E6%97%8B%E5%BE%8B%E8%8A%82%E5%A5%8F%E5%AF%B9%E5%92%8C%E5%A3%B0%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%8C%E5%B1%9E%E4%B8%83%E5%92%8C%E5%BC%A6/">
-                        <span style="margin-right: 0.2rem;">阅读全文</span>
-                        <i class="fas fa-angle-right"></i>
-                    </a>
-                </div>
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2023/08/19">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2023/08/19</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
+        </li>
+    </ul>
+    <!-- comment -->
     
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Music">Music</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Music Theory">Music Theory</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Harmonics">Harmonics</a>
-    
-</div>
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
 
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
-            
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2023/08/18/20230818-%E6%8B%89%E4%B8%81%E8%AF%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
-                
-                <span class="abstract-title-text">20230818-拉丁语的基本概念</span>
-            </a>
-            <div class="abstract-content">
-                <p>Frederic M.Wheelock 的 Wheelock’s Latin 的学习笔记。<br>Study notes on Frederic M.Wheelock’s <em>Wheelock’s Latin</em>.<br>
-            </div>
-            <!-- read more -->
-            
-                <div class="abstract-read-more-button">
-                    <a href="/2023/08/18/20230818-%E6%8B%89%E4%B8%81%E8%AF%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
-                        <span style="margin-right: 0.2rem;">阅读全文</span>
-                        <i class="fas fa-angle-right"></i>
-                    </a>
-                </div>
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2023/08/18">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2023/08/18</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Linguistics">Linguistics</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="European Languages">European Languages</a>
-    
-</div>
 
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
             
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2023/08/18/20230818-%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%8F%82%E5%8A%A0%20Kaggle%20Data%20Science%20Competition/">
-                
-                <span class="abstract-title-text">20230818-记第一次参加 Kaggle Data Science Competition</span>
-            </a>
-            <div class="abstract-content">
-                
-            </div>
-            <!-- read more -->
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2023/08/18">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2023/08/18</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Science">Computer Science</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Data Science">Data Science</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Artificial Intelligence">Artificial Intelligence</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Medicine">Medicine</a>
-    
-</div>
 
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
-    
-        
-        
-        
-        
             
-            
-        
-        <article class="index-post">
-            <a class="abstract-title" href="/2023/08/17/20230817-%E8%B0%83%E6%80%A7%E6%94%AF%E6%9F%B1%E4%B8%8E%E4%B8%BB%E5%B1%9E%E5%92%8C%E5%BC%A6/">
-                
-                <span class="abstract-title-text">20230817-调性支柱与主属和弦</span>
-            </a>
-            <div class="abstract-content">
-                <p>Steven Laitz 的 The Complete Musician 的学习笔记与一些音乐学习上遇到的知识总结。<br>Study notes on Steven Laitz’s The Complete Musician and a summary of the knowledge encountered in music learning.<br>
-            </div>
-            <!-- read more -->
-            
-                <div class="abstract-read-more-button">
-                    <a href="/2023/08/17/20230817-%E8%B0%83%E6%80%A7%E6%94%AF%E6%9F%B1%E4%B8%8E%E4%B8%BB%E5%B1%9E%E5%92%8C%E5%BC%A6/">
-                        <span style="margin-right: 0.2rem;">阅读全文</span>
-                        <i class="fas fa-angle-right"></i>
-                    </a>
-                </div>
-            
-            <div class="abstract-post-meta">
-                <!-- date -->
-                <div class="abstract-date" title="Last updated: 2023/08/18">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2023/08/17</span>
-                </div>
-                <!-- tags -->
-                
-                    <div class= abstract-tags >
-    
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Music">Music</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Music Theory">Music Theory</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="Harmonics">Harmonics</a>
-    
-</div>
 
-                
-            </div>
-        </article>
-        <div class="index-post-divider"></div>
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
     
-    <!-- paginator  -->
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+        
+
     
 </main>
 
@@ -746,6 +721,23 @@
 
         </div>
         <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8E%E9%9F%B3%E4%B8%AD%E7%9A%84%E5%92%8C%E5%BC%A6%E8%B7%B3%E8%BF%9B"><span class="toc-number">1.</span> <span class="toc-text">低音中的和弦跳进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8E%E9%9F%B3%E4%B8%AD%E7%9A%84%E9%82%BB%E9%9F%B3%E5%92%8C%E5%BC%A6"><span class="toc-number">2.</span> <span class="toc-text">低音中的邻音和弦</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%92%8C%E5%A3%B0%E7%9A%84%E4%BA%8C%E7%AD%89%E7%BA%A7%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">和声的二等级分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8E%E9%9F%B3%E4%B8%AD%E7%9A%84%E7%BB%8F%E8%BF%87%E9%9F%B3"><span class="toc-number">4.</span> <span class="toc-text">低音中的经过音</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E4%BD%8E%E9%9F%B3%E7%90%B6%E9%9F%B3%E6%8B%93%E5%B1%95%E4%B8%BB%E5%92%8C%E5%BC%A6"><span class="toc-number">5.</span> <span class="toc-text">用低音琶音拓展主和弦</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E7%BB%8F%E8%BF%87%E9%9F%B3%E6%8B%93%E5%B1%95%E5%B1%9E%E5%92%8C%E5%BC%A6"><span class="toc-number">6.</span> <span class="toc-text">用经过音拓展属和弦</span></a></li></ol>
+            </div>
         
         <!-- sidebar -->
         <div class="sidebar sidebar-hide">
@@ -964,6 +956,8 @@
         <!-- CNZZ -->
         
         <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
         
         <!-- mermaid -->
         
