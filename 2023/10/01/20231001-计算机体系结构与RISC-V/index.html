@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="cn">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Timmy Giorno">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Timmy Giorno">
+    
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta name="description" content="武汉大学《计算机组成与设计》课程的课程笔记，使用 David Patterson 的教材书，并针对书中的一些不清晰的地方做了详尽的注解。The notes of the course Computer Composition and Design in Wuhan University. Use the textbook of David Patterson, and make detailed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="20231001-计算机体系结构与 RISC-V">
+<meta property="og:url" content="https://timmygiorno.github.io/2023/10/01/20231001-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8ERISC-V/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="武汉大学《计算机组成与设计》课程的课程笔记，使用 David Patterson 的教材书，并针对书中的一些不清晰的地方做了详尽的注解。The notes of the course Computer Composition and Design in Wuhan University. Use the textbook of David Patterson, and make detailed">
+<meta property="og:locale">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231214183244.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/CSAPP/Pasted%20image%2020231214183829.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231214185457.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/CSAPP/Pasted%20image%2020231214234529.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215000520.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215000931.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215001218.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215002531.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231206223329.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231206223403.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231206223507.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231206223844.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215010525.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231206224306.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231207154947.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215014229.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215015547.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231206193345.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033236.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215020223.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215021237.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215032834.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215032547.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215032623.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215032728.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033027.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033041.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033158.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033416.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033509.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033516.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033535.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033549.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033603.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215033631.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215150120.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215150129.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215151116.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215152903.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215153202.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215164206.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215170959.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215164244.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215170709.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215170721.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215171154.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215174603.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215174618.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215174639.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215174812.png">
+<meta property="article:published_time" content="2023-10-01T07:48:24.000Z">
+<meta property="article:modified_time" content="2023-12-25T15:27:01.515Z">
+<meta property="article:author" content="Timmy Giorno">
+<meta property="article:tag" content="Computer Science">
+<meta property="article:tag" content="Computer Architecture">
+<meta property="article:tag" content="Assembly Language">
+<meta property="article:tag" content="RISC-V">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231214183244.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/art.ico">
+    
+    <title>20231001-计算机体系结构与 RISC-V · Timmy&#39;s Personal Website</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- Google tag (gtag.js) -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>Better Call Timmy!</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">Better Call Timmy!</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">20231001-计算机体系结构与 RISC-V</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+    
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/1735.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                20231001-计算机体系结构与 RISC-V
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Science">Computer Science</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Architecture">Computer Architecture</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Assembly Language">Assembly Language</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="RISC-V">RISC-V</a>
+    
+</div>
+
+                
+                <!-- 文章字数统计 -->
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">8.2k</span>阅读时长: <span class="post-count reading-time">32 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2023/10/01</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <p>武汉大学《计算机组成与设计》课程的课程笔记，使用 David Patterson 的教材书，并针对书中的一些不清晰的地方做了详尽的注解。<br>The notes of the course <em>Computer Composition and Design</em> in Wuhan University. Use the textbook of David Patterson, and make detailed annotations for some unclear points in the book.<br><span id="more"></span></p>
+<h2><span id="introduction">Introduction</span></h2><h3><span id="a-general-structure">A General Structure</span></h3><p>摩尔定律（Moore’s law）：芯片上的晶体管集成度每 18 个月翻一番。</p>
+<p><strong>计算机体系结构中的 8 个伟大思想</strong>：</p>
+<ol>
+<li>面向摩尔定律的设计：由于快速的迭代速度，架构师必须预测其设计完成时的工艺水平。</li>
+<li>使用抽象简化设计：区分不同的设计层次，隐藏底层细节以提供给高层一个更简单的模型。</li>
+<li>加速经常性事件：相比优化罕见情形，很多时候这样更简单且更好提升性能。</li>
+<li>通过并行提高性能。</li>
+<li>通过流水线提高性能。</li>
+<li>通过预测提高性能：在某些情况下，假设从预测错误中恢复的代价并不高，且预测相对准确，则平均来说进行预测并开始工作可能会比等到明确结果后再执行更快。</li>
+<li>存储层次：给程序员一种主存和存储层次顶层一样快的速度、与底层一样大的容量和价格的错觉。</li>
+<li>通过冗余提高可靠性：我们需要引入冗余组件来让系统发生故障时可以代替失效组件并帮助检测故障。</li>
+</ol>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231214183244.png" alt></p>
+<ul>
+<li>系统软件中最重要的是操作系统和编译器。操作系统（operating system）是用户程序和硬件之间的接口，为用户提供服务和监控功能；编译器（compiler）负责把高级语言编写的程序翻译成硬件能执行的指令。高级语言可以让程序员用更自然的语言来思考，提高其独立性，并提高了程序相对于计算机的独立性（不同计算机的编译器和汇编器可能存在区别）。</li>
+<li>汇编器（assembler）可以将助记符形式的指令自动翻译成对应的二进制。助记符形式的指令成为汇编语言（assembly language），机器可以理解的二进制语言是机器语言（machine language）。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/CSAPP/Pasted%20image%2020231214183829.png" alt></p>
+<hr>
+<h3><span id="hardware">Hardware</span></h3><p>计算机的两个关键部件是输入设备（input device）和输出设备（output device）。输入为计算机提供数据，输出将结果送给用户。无线网络等设备既是输入又是输出设备。</p>
+<p>集成电路也叫芯片，是一种继承了大量晶体管的设备。</p>
+<ul>
+<li>芯片中大多含有处理器，是计算机中最活跃的部分，严格按照程序中的指令运行，完成数据相加、数据测试、按结果发出控制信号使 I/O 设备做出动作等操作。有时候，人们把处理器称为中央处理单元（ central processor unit），即 CPU。处理器从逻辑上包括两个主要部件：数据通路和控制器，分别相当于处理器的身体和大脑。</li>
+<li>数据通路（datapath）负责完成算术运算。</li>
+<li>控制器（control）负责指导数据通路、存储器和 I/O 设备按照程序的指令正确执行。</li>
+<li>芯片中还有存储器芯片。内存（memory）是程序运行时的存储空间，它同时也用于保存程序运行时所使用的数据。内存由多片 DRAM 芯片组成，用来承载程序的指令和数据。与串行访问内存（如磁带）不同的是，无论数据存储在什么位置，DRAM 访问内存所需的时间基本相同。</li>
+<li>在处理器内部使用的是另外一种存储器：高速缓存。高速缓存（cache memory）是一种小而快的存储器，一般作为 DRAM 的缓冲。高速缓存采用的是另一种存储技术，称为静态随机访问存储器 SRAM，其速度更快而且不那么密集，因此价格比 DRAM 更贵。</li>
+</ul>
+<p>一旦关掉电源，所有数据就丢失了，因为计算机中的内存是易失性存储。与之不同的是，如果关掉 DVD 机的电源，所记录的内容将不会丢失，因为 DVD 采用的是非易失性存储。为了区分易失性存储与非易失性存储, 我们将前者称为主存储（main memory）或主要存储（primary memory），将后者称为辅助存储（secondary memory）。辅助存储形成了存储层次中更低的一层。 </p>
+<ul>
+<li>DRAM 自 1975 年起在主存储中占主导地位，而磁盘在辅助存储中占主导地位的时间更早。</li>
+<li>由于器件尺寸和前面所述的特点，非易失性半导体存储 —— 闪存（flash memory）在个人移动设备中替代了磁盘。除了非易失性外，闪存比 DRAM 慢，但却便宜很多。虽然每位的价格高于磁盘，但是闪存在体积、电容、可靠性和能耗方面都优于磁盘。因此闪存是个人移动设备中的标准辅助存储。</li>
+<li>与硬盘和 DRAM 不同的是，闪存在写入 $100000 \sim 1000000$ 次后可能老化或损坏。因此，文件系统必须记录写操作的数目，而且具备类似 “移动常用的数据” 这种避免存储器损坏的策略。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231214185457.png" alt></p>
+<hr>
+<h3><span id="performance-of-the-computer">Performance of the Computer</span></h3><p>不同情境下的评价侧重不同。如果在两台不同的桌面计算机上运行同一个程序，那么可以说首先完成作业的那台计算机更快。如果运行的是一个数据中心，有好几台服务器供很多用户投放作业，那么应该说在一天之内完成作业最多的那台计算机更快。个人计算机用户会对降低响应时间（response time）感兴趣，而数据中心的管理者感兴趣的常常是提高吞吐率或带宽。简而言之，<strong>个人移动设备更关注响应时间，而服务器则更关注吞吐率。</strong></p>
+<ul>
+<li>响应时间（execution time）是指从开始一个任务到该任务完成的时间，又被称为执行时间。</li>
+<li>吞吐率或者带宽（band-width）指的是单位时间内内完成的任务数。</li>
+<li>在实际的计算机系统中，响应时间和吞吐率往往相互影响。</li>
+</ul>
+<p>为了使性能最大化，我们希望任务的响应时间或执行时间最小化。对于某个计算机 $\text{X}$，我们可将其性能和执行时间的关系表达为：</p>
+<script type="math/tex; mode=display">
+\text { 性能 } _{\mathrm{X}}=\frac{1}{\text { 执行时间 }_{\mathrm{X}}}</script><p>这意味着如果有两台计算机 $\mathrm{X}$ 和 $\mathrm{Y},\ \mathrm{X}$ 比 $\mathrm{Y}$ 性能更好，则有</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+ \text { 性能 } _\mathrm{X} &>\text { 性能 } _\mathrm{Y} \\
+ \frac{1}{\text { 执行时间 }_\mathrm{X}} &> \frac{1}{\text { 执行时间 }_\mathrm{Y}} \\
+\text { 执行时间 } _\mathrm{Y} &> \text { 执行时间 } _\mathrm{X} \\
+&
+\end{aligned}</script><p>计算机经常被共享使用，一个处理器也可能同时运行多个程序。在这种情况下，系统可能更侧重于优化吞吐率，而不是致力于将单个程序的执行时间变得最短。因此，我们往往要把运行自己任务的时间与一般的运行时间区别开来。</p>
+<ul>
+<li>我们使用 CPU 执行时间来进行区别，简称为 CPU 时间，只表示在 CPU 上花费的时间，而不包括等待 I/O 或运行其他程序的时间。（需要注意的是，用户所感受到的是程序的运行时间, 而不是 CPU 时间） </li>
+<li>CPU 时间还可进一步分为用于用户程序的时间和操作系统为用户程序执行相关任务所花去的 CPU 时间。前者称为用户 CPU 时间而后者称为系统 CPU 时间。要精确区分这两种 CPU 时间是困难的，因为通常难以分清哪些操作系统的活动是属于哪个用户程序的，而且不同操作系统的功能也千差万别。</li>
+<li>为了一致，我们保持区分基于响应时间的性能和基于 CPU 执行时间的性能。我们使用术语系统性能 （system performance）表示空载系统的响应时间，并用术语 CPU 性能（CPU performance）表示用户 CPU 时间。</li>
+</ul>
+<p>几乎所有计算机的构建都需要基于时钟，该时钟确定各类事件在硬件中何时发生。这些离散时间间隔被称为时钟周期数（clock cycle，或称滴答数、时钟谪答数、时钟数、周期数）。一个简单公式可以将最基本的指标与 CPU 时间联系起来：</p>
+<script type="math/tex; mode=display">
+\text { 程序的 } \mathrm{CPU} \text { 执行时间 }=\text { 程序的 CPU 时钟周期数 }\times \text { 时钟周期 }</script><p>由于时钟频率和时钟周期长度互为倒数，故另一种表达形式为</p>
+<script type="math/tex; mode=display">
+\text { 程序的 } \mathrm{CPU} \text { 执行时间 }=\frac{\text { 程序的 CPU 时钟周期数 }}{\text { 时钟频率 }}</script><p>由于编译器明确生成了要执行的指令，且计算机必须通过执行指令来运行程序，因此执行时间必然依赖于程序中的指令数。一种考虑执行时间的方法是，执行时间等于执行的指令数乘以每条指令的平均时间。因此，一个程序需要的时钟周期数可写为：</p>
+<script type="math/tex; mode=display">
+\text { CPU 时钟周期数 }=\text { 程序指令数 }\times \text { 指令平均时钟周期数 }</script><p>指令平均时钟周期数（Clock cycle Per Instruction）表示执行每条指令所需的时钟周期平均数，缩写为 CPI。根据所完成任务的不同，不同的指令需要的时间可能不同，CPI 是程序的所有指令所用时钟周期的平均数。</p>
+<p>最后，我们能构造出基本的性能公式：</p>
+<script type="math/tex; mode=display">
+ \mathrm{CPU} \text { 时间 }=\text{ 指令数 }\times\text{ CPI } \times \text { 时钟周期长度 }</script><p>平均 CPI 的计算公式如下：</p>
+<script type="math/tex; mode=display">
+\text { Clock Cycles }=\sum_{i=1}^n\left(\mathrm{CPI}_{\mathrm{i}} \times \text { Instruction Count }_{\mathrm{i}}\right)</script><script type="math/tex; mode=display">
+\text{CPI}=\frac{\text { Clock Cycles }}{\text{Instruction Count}}=\sum_{i=1}^n\left(\mathrm{CPI}_{\mathrm{i}} \times \frac{\text { Instruction Count }_{\mathrm{i}}}{\text{Instruction Count}}\right)</script><p><img src="/IMAGES/CSAPP/CSAPP/Pasted%20image%2020231214234529.png" alt></p>
+<ol>
+<li><strong>Instructions per Program（每个程序的指令数）</strong>：表示在执行一个程序时所涉及的指令数量。</li>
+<li><strong>Clock cycles per Instruction（每个指令的时钟周期数）</strong>：表示执行每个指令所需的时钟周期数。不同的指令可能需要不同数量的时钟周期来执行。</li>
+<li><strong>Seconds per Clock Cycle（每个时钟周期的秒数）</strong>：表示每个时钟周期的时间长度。</li>
+</ol>
+<p>将这三个因素相乘，就得到了总的 CPU 时间，即程序执行所需的时间。假设一个程序有 1000 条指令，每个指令平均需要 5 个时钟周期来执行，每个时钟周期的时间为 0.001 秒。那么，可以使用上述公式计算 CPU 时间：</p>
+<script type="math/tex; mode=display">
+\text { CPU Time }=\frac{1000 \text { Instructions }}{1 \text { Program }} \times \frac{5 \text { Clock cycles }}{1 \text { Instruction }} \times \frac{0.001 \text { Seconds }}{1 \text { Clock cycle }}</script><p>计算结果为 5 秒每程序。</p>
+<p>下表概括了不同的部分和影响 CPU 性能公式中的各种因素：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">硬件或软件指标</th>
+<th style="text-align:center">影响什么</th>
+<th style="text-align:center">如何影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">算法</td>
+<td style="text-align:center">指令数，CPI</td>
+<td style="text-align:center">算法决定源程序执行指令的数目，从而也决定了 CPU 执行指令的数目。算法也可能通过使用较快或较慢的指令影响 CPI。例 <br> 如，当算法使用更多的除法运算时，将会导致 CPI 增大</td>
+</tr>
+<tr>
+<td style="text-align:center">编程语言</td>
+<td style="text-align:center">指令数，CPI</td>
+<td style="text-align:center">编程语言显然会影响指令数，因为编程语言中的语句必须翻 <br> 译为指令，从而决定了指令数。编程语言也可影响 CPI，例如， <br> Java 语言充分支持数据抽象，因此将进行间接调用，需要使用 <br> CPI 较高的指令</td>
+</tr>
+<tr>
+<td style="text-align:center">编译器</td>
+<td style="text-align:center">指令数，CPI</td>
+<td style="text-align:center">因为编译器决定了源程序到计算机指令的翻译过程，所以编 <br> 译器的效率既影响指令数又影响 CPI。编译器的角色可能十分 <br> 复杂，并以多种方式影响 CPI</td>
+</tr>
+<tr>
+<td style="text-align:center">指令系统 <br> 体系结构</td>
+<td style="text-align:center">指令数，时钟频率，CPI</td>
+<td style="text-align:center">指令系统体系结构影响 CPU 性能的所有三个方面，因为它影 <br> 响完成某功能所需的指令数、每条指令的周期数以及处理器的 <br> 时钟频率</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>当今的计算机可以使用不同的时钟频率，所以我们需要对程序使用平均时钟频率。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215000520.png" alt></p>
+<hr>
+<h2><span id="risc-v">RISC-V</span></h2><p><strong>Instruction Set</strong> is the repertoire of instructions of a computer. Different computers have different instruction sets, but with many aspects in common. In this note, we use RISC-V, which developed at UC Berkeley as open ISA.</p>
+<p>RISC-V has a 32 × 64-bit register file, used for frequently accessed data.</p>
+<ul>
+<li>64-bit data is called a “doubleword”. 32-bit data is called a “word”.</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215000931.png" alt></p>
+<ul>
+<li>$2^{63}$ 个字节。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215001218.png" alt></p>
+<p><strong>Design Principle</strong>:</p>
+<ol>
+<li>简单源于规整，Simplicity favours regularity. Regularity makes implementation simpler. Simplicity enables higher performance at lower cost.</li>
+<li>越小越快，Smaller is faster.</li>
+<li>Good design demands good compromises. Different formats complicate decoding, but allow 32-bit instructions uniformly.</li>
+</ol>
+<hr>
+<h3><span id="basic-operations">Basic Operations</span></h3><p><strong>Arithmetic Operands</strong>: <code>add</code> and <code>subtract</code>, with two sources and one destination.</p>
+<ul>
+<li>form: <code>add a, b, c // a = b + c</code></li>
+<li>Arithmetic instructions use register operands.</li>
+</ul>
+<p><strong>Memory Operands</strong>: Load values from memory into registers and store result from register to memory.</p>
+<ul>
+<li>form: <code>ld x9, 64(x22), sd x9, 96(x22) A[12]=A[8]</code></li>
+<li>Main memory used for composite data: Arrays, Structures, dynamic data.</li>
+<li><strong>Registers are faster to access than memory. Operating on memory data requires loads and stores, hence compiler must use registers for variables as much as possible to optimize the efficiency.</strong></li>
+<li>Memory is byte addressed: each address identifies an 8-bit byte.</li>
+<li>RISC-V is Little Endian: Least-significant byte at least address of a word.<ul>
+<li><code>0x14532DCB</code> → <code>xCBx2Dx53x14</code></li>
+</ul>
+</li>
+<li>RISC-V does not require words to be aligned in memory.<ul>
+<li>在 x86 架构中，为了提高访问效率，要求内存中存储的 32 位或 64 位数据必须按 4 字节或 8 字节边界对齐，也就是字的起始地址必须是 4 或 8 的整数倍。但是在 RISC-V 中，并没有这种要求。一个32位的整数可以被存储在内存的任意地址，不需要是4字节对齐的。这样可以提高内存利用率，但是可能降低访问效率。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215002531.png" alt></p>
+<p><strong>Immediate Operands</strong>: Constant data specified in an instruction, making the common case fast.</p>
+<ul>
+<li>form: <code>addi x22, x22, 4</code></li>
+<li>Immediate operand avoids a load instruction.</li>
+<li>设置立即数操作数的原因是遵循 make the common case fast 这一设计原则。</li>
+<li>Register x0 里面保存着常量 0，用途很多，比如计算负数。</li>
+</ul>
+<hr>
+<h3><span id="representing-instructions">Representing Instructions</span></h3><p>Instructions are encoded in binary, called machine code. <strong>RISC-V instructions are all encoded as 32-bit instruction words, embodying the principle of regularity.</strong></p>
+<p><strong>R (Register) - Format Instrucion:</strong></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231206223329.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231206223403.png" alt></p>
+<p><strong>I (Immediate) - format Instructions</strong>:</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231206223507.png" alt></p>
+<p>12 位 immediate 字段为补码值，所以它可以表示从 $-2^{11}$ 到 $2^{11}-1$ 之间的整数。超过 32 个寄存器在这种格式下使用起来会很困难，因为 <code>rd</code> 和 <code>rs1</code> 字段都需要增添额外的一位，这导致一个字是不够的。</p>
+<ul>
+<li>当 I 型格式用于加载指令时，immediate 字段表示单位为字节的偏移量，所以加载双字指令可以取相对于基址寄存器 <code>rd</code> 中基地址偏移 2048 字节的任何双字。</li>
+<li>这与计算 PC 相对地址的指令如 <code>jalr</code> 等不同，后者的 immediate 字段是以指令字（32 位）为单位的。</li>
+</ul>
+<p><strong>S-format Instructions</strong>:</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231206223844.png" alt></p>
+<p>指令格式通过操作码字段中的值来区分：每个格式在第一个字段（opcode）中被分配了一组不同的操作码值，以便硬件知道如何处理指令的其余部分。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215010525.png" alt></p>
+<hr>
+<h3><span id="logical-operations">Logical Operations</span></h3><p>Here is the table of instructions for bitwise manipulation:</p>
+<script type="math/tex; mode=display">
+\begin{array}{|c|c|c|c|}
+\hline \text { Operation } & \text { C } & \text { Java } & \text { RISC-V } \\
+\hline \text { Shift left } & \ll & \ll & \text { slli } \\
+\hline \text { Shift right } & >> & >>> & \text { srli } \\
+\hline \text { Bit-by-bit AND } & \& & \& & \text { and, andi } \\
+\hline \text { Bit-by-bit OR } & \mid & \mid & \text { or, ori } \\
+\hline  \text { Bit-by-bit XOR } & \wedge & \wedge & \text { xor, xori } \\
+\hline \text { Bit-by-bit NOT } & \sim & \sim & \\
+\hline
+\end{array}</script><ul>
+<li>AND: Useful to mask bits in a word. Select some bits, clear others to 0.</li>
+<li>OR: Useful to include bits in a word. Set some bits to 1, leave others unchanged.</li>
+<li>XOR: 1→0 and 0→1.</li>
+<li>为了保持三操作数格式，RISC-V 的设计者决定引入指令 XOR 来代替 NOT。因为异或是在两个操作数对应位相同时设 0，不同时设 1，所以 NOT 等价于异或 <code>1111....1111</code>。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231206224306.png" alt><br>这些移位指令使用 I 型格式。因为它不适用于对一个 64 位寄存器移动大于 63 位的操作，只有 I 型格式中 12 位的 immediate 字段中的低 6 位被实际使用。其余的 6 位被重新用作额外的操作码字段,，即 funct 6。</p>
+<ul>
+<li>逻辑左移提供了另外一个好处：左移 $i$ 位相当于乘以 $2^i$, 就像是十进制数左移 $i$ 位相当于乘以 $10^i$ 一样。</li>
+<li>RISC-V 提供了第三种类型的移位指令 —— 算术右移 <code>srai</code>。这个变体与 <code>srli</code> 很相似，但它不是用零填充空出的左边的位，而是用原来的符号位来填充。它还提供了三个移位操作的变体：<code>sll</code>、<code>srl</code> 和 <code>sra</code>，他们从寄存器中取出移位的位数。</li>
+</ul>
+<hr>
+<h3><span id="conditional-operations-and-loop">Conditional Operations and Loop</span></h3><p><strong>Conditional Operations</strong>: Branch to a labeled instruction if a condition is true; otherwise, continue sequentially.</p>
+<ul>
+<li><code>beq rs1, rs2, L1 // if (rs1 == rs2) branch to instruction labeled L1</code></li>
+<li><code>bne rs1, rs2, L1 // if (rs1 != rs2) branch to instruction labeled L1</code></li>
+<li><code>blt (Signed comparison unsigned: bltu) rs1, rs2, L1 // if (rs1 &lt; rs2) branch to instruction labeled L1</code></li>
+<li><code>bge (Signed comparison unsigned bgeu) rs1, rs2, L1 // if (rs1 &gt;= rs2) branch to instruction labeled L1</code></li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231207154947.png" alt></p>
+<ul>
+<li>一般来说，如果我们测试相反的条件来进行跳转，代码将更有效率。</li>
+</ul>
+<p><strong>Example C code</strong>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (save[i] == k) i += <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>i in <code>x22</code>, k in <code>x24</code>, address of the array saved in <code>x25</code>.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Loop: slli x10, x22, 3 // x10 = 8i</span><br><span class="line">add x10, x10, x25 // x10 = &amp;save[i]</span><br><span class="line">ld  x9, 0(x10) // x9 = save[i]</span><br><span class="line">bne x9, x24, Exit</span><br><span class="line">addi x22, 1</span><br><span class="line">beq x0, x0, loop</span><br><span class="line">Exit: ...</span><br></pre></td></tr></table></figure>
+<p>大多数编程语言都包含 case 或 switch 语句，允许程序员根据某个值选择多个分支中的一个。实现 switch 的最简单方法是通过一系列的条件测试，将 switch 语句转换成 if-then-else 语句。</p>
+<p>有时，另一种更有效的方法是编码形成指令序列的地址表，称为分支地址表或分支表，程序只需要索引到表中，然后跳转到合适的指令序列。因此，分支表只是一个双字数组，其中包含与代码中的标签对应的地址。该程序将分支表中的相应条目加载到寄存器中，然后需要使用寄存器中的地址进行跳转。</p>
+<p>为了支持这种情况，RISC-V 这类指令系统包含一个间接跳转指令，该指令对寄存器中指定的地址执行无条件跳转。在 RISC-V 中，跳转 - 链接指令 <code>jalr</code>  用于此目的。</p>
+<hr>
+<h3><span id="procedure-calling">Procedure Calling</span></h3><p><strong>Basic Blocks</strong>: A basic block is a sequence of instructions with 1. no embedded branches (except at end) ; 2. No branch targets (except at beginning).</p>
+<ul>
+<li>A compiler identifies basic blocks for optimization.</li>
+<li>An advanced processor can accelerate execution of basic blocks.</li>
+</ul>
+<p>过程（procedure）或函数是编程人员用于结构化编程的一种工具，两者均有助于提高程序的可理解性和代码的可重用性。过程允许程序员一次只专注于任务的一部分；参数可以传递数值并返回结果，因此用以充当过程和其余程序与数据之间的接口。</p>
+<p><strong>Procedure Calling</strong>:</p>
+<ol>
+<li>Place parameters in registers <code>x10</code> to <code>x17</code>; 把参数放在过程可以访问到的位置；</li>
+<li>Transfer control to procedure; 把控制转交给过程；</li>
+<li>Acquire storage for procedure; 获取过程所需的存储资源；</li>
+<li>Perform procedure’s operations; 执行任务；</li>
+<li>Place result in register for caller; 将结果值放在调用程序可以访问到的位置；</li>
+<li>Return to place of call (address in <code>x1</code>). 将控制返回到初始点，因为过程可以从程序的多个点调用。</li>
+</ol>
+<p><strong>Procedure call</strong>: </p>
+<ul>
+<li>Use the operation: <code>jal x1, ProcedureLabel</code> ( <code>jal</code> means jump and link ). Address of following instruction put in <code>x1</code>, then jumps to target address.</li>
+</ul>
+<p><strong>Procedure return</strong>: </p>
+<ul>
+<li>Use the operation: <code>jalr x0, 0(x1)</code>. Like <code>jal</code>, but jumps to <code>0+address</code> in <code>x1</code>.</li>
+<li>Use <code>x0</code> as <code>rd</code> (<code>x0</code> cannot be changed ).</li>
+<li>Can also be used for computed jumps, like case/switch statements.</li>
+</ul>
+<p>寄存器 jal 指令跳转到存储在寄存器 <code>x1</code> 中的地址。因此，调用程序或称为调用者（caller）将参数值放入 <code>x10 ~ x17</code> 中，并使用 <code>jal</code> 跳转到过程 X（有时被称为被调用者 callee）。被调用者执行计算，将结果放在相同的参数寄存器中, 并使用 <code>jalr</code> 将控制返还给调用者。</p>
+<p>在存储程序概念中，需要一个寄存器来保存当前执行指令的地址。由于历史原因，这个寄存器总是被称为程序计数器，尽管其更合理的名称可能是指令地址寄存器。<code>jal</code> 指令实际上将 $\mathrm{PC}+4$ 保存在其指定寄存器 (通常为 $\times 1$ ) 中，以链接到后续指令的字节地址来设置过程返回。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215014229.png" alt></p>
+<p>换出寄存器的理想数据结构是栈 —— 一种后进先出的队列。栈需要一个指向栈中最新分配地址的指针，以指示下一个过程应该放置换出寄存器的位置或寄存器旧值的存放位置。在 RISC-V 中，栈指针（stack pointer）是寄存器 <code>x2</code>，也称为 sp。栈指针按照每个被保存或恢复的寄存器按双字进行调整。</p>
+<ul>
+<li>按照历史惯例，栈按照从高到低的地址顺序 “增长” 。这就意味着可以通过减栈指针将值压栈；通过增加栈指针缩小栈，从而弹出栈中的值。</li>
+</ul>
+<hr>
+<p><strong>Example C code</strong>:</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215015547.png" alt></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="type">long</span> <span class="type">int</span> <span class="title function_">leaf_example</span><span class="params">( </span></span><br><span class="line"><span class="params"><span class="type">long</span> <span class="type">long</span> <span class="type">int</span> g, <span class="type">long</span> <span class="type">long</span> <span class="type">int</span> h, </span></span><br><span class="line"><span class="params"><span class="type">long</span> <span class="type">long</span> <span class="type">int</span> i, <span class="type">long</span> <span class="type">long</span> <span class="type">int</span> j)</span></span><br><span class="line">&#123; </span><br><span class="line"><span class="type">long</span> <span class="type">long</span> <span class="type">int</span> f; </span><br><span class="line">f = (g + h) -(i + j); </span><br><span class="line"><span class="keyword">return</span> f; <span class="comment">// f is a long long int value.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Analysis and RISC-V Code</strong></p>
+<ul>
+<li>Arguments <code>g, h, i, j</code> in <code>x10, x11, x12, x13</code>.</li>
+<li><code>f</code> in <code>x20</code> and temporaries <code>x5, x6</code>. We need to save <code>x5, x6, x20</code> on stack.</li>
+<li>Return register <code>x10</code>.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">addi sp, sp, -24 </span><br><span class="line">sd x5, 16(sp)</span><br><span class="line">sd x6, 8(sp)</span><br><span class="line">sd x20, 0(sp) // store values in stack. After this function, restore them.</span><br><span class="line">// Allocate memory for intermediates on stack.</span><br><span class="line">// sp means stack pointer. Remind of the knowledge in UC Berkeley CS161.</span><br><span class="line">// 24 means 3x8 bytes for 3 value.</span><br><span class="line"></span><br><span class="line">add x5, x10, x11</span><br><span class="line">add x6, x12, x13</span><br><span class="line">sub x20, x5, x6</span><br><span class="line">addi x10, x20, 0 // Copy value.</span><br><span class="line"></span><br><span class="line">ld x20,0(sp) </span><br><span class="line">ld x6,8(sp) </span><br><span class="line">ld x5,16(sp) </span><br><span class="line">addi sp, sp, 24 // Restore the stack pointer.</span><br><span class="line"></span><br><span class="line">jalr x0, 0(x1) // Return to caller.</span><br><span class="line"></span><br><span class="line">// 由于调用者不希望在过程调用中保存寄存器 x5 和 x6，可以从代码中去掉两次存储和两次载入。</span><br><span class="line">// 但仍须保存并恢复 x20，因为被调用者必须假设调用者需要该值。</span><br></pre></td></tr></table></figure>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231206193345.png" alt></p>
+<ul>
+<li><code>x5</code> – <code>x7</code>, <code>x28</code> – <code>x31</code>: temporary registers. Not preserved by the callee.</li>
+<li><code>x8</code> – <code>x9</code>, <code>x18</code> – <code>x27</code>: saved registers. If used, the callee saves and restores them.</li>
+<li><code>x10</code> - <code>x17</code>: Argument registers.</li>
+</ul>
+<p>在 RISC-V 的调用约定中，具体的规定可能有所不同，因为 RISC-V 允许不同的调用约定。一般来说，调用者（caller）负责将参数传递给被调用者（callee），而被调用者负责保存和恢复调用前后需要保持不变的寄存器。</p>
+<p>参数寄存器是<code>x10</code>到<code>x17</code>。这些寄存器一般来说是由调用者来设置的，而被调用者不需要保存它们，因为被调用者可以自由使用这些寄存器而无需担心破坏调用者的数据。</p>
+<p>因此，一般情况下，<code>x10</code>到<code>x17</code>寄存器的值不需要由被调用者保存和恢复。被调用者主要关心的是保存和恢复那些被调用者可能会修改的寄存器，例如<code>x8</code>到<code>x9</code>和<code>x18</code>到<code>x27</code>。</p>
+<p>不调用其他过程的过程被叫做叶子（leaf）过程。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033236.png" alt></p>
+<p><strong>Non-Leaf Procedures</strong>: Procedures that call other procedures. For nested call, caller needs to save its return address and any arguments and temporaries needed after the call on the stack, then restore from the stack after the call.</p>
+<ul>
+<li>对于嵌套的过程调用，调用者函数在调用其他函数前，需要先将一些信息，如返回地址、参数、临时变量等数据保存到堆栈中。因为在调用后会从被调用的函数返回，此时需要依据堆栈中的数据恢复调用者函数的上下文环境。这样调用者函数才能接着正确执行, 而不会因为调用其他函数而丢失了自身的一些状态信息。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215020223.png" alt></p>
+<p><strong>Example C code</strong>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="type">long</span> <span class="type">int</span> <span class="title function_">fact</span><span class="params">(<span class="type">long</span> <span class="type">long</span> <span class="type">int</span> n)</span> </span><br><span class="line">&#123; <span class="keyword">if</span> (n &lt; <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>; </span><br><span class="line"> <span class="keyword">else</span> <span class="keyword">return</span> n * fact(n<span class="number">-1</span>); </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Argument n in <code>x10</code> and result in <code>x10</code>.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">addi sp, sp, -16 // Save return address and n on stack</span><br><span class="line">sd x1, 8(sp) // return address</span><br><span class="line">sd x10, 0(sp) // n as a non-local variable</span><br><span class="line"></span><br><span class="line">外部传来了一个请求，要求运行 fact()，给的参数是 n，在 x10 里。</span><br><span class="line">下一条指令的地址在 x1 里。</span><br><span class="line">于是我们需要把他们先存在 stack 里，以防万一。</span><br><span class="line"></span><br><span class="line">addi x5, x10, -1 // arg = n-1</span><br><span class="line">bge x5, x0, L1 // if n &gt;= 1 (arg&gt;=0), go to the branch L1</span><br><span class="line">addi x10, x0, 1 // x10 = 1 (return value)</span><br><span class="line">addi sp, sp, 16 // Pop stack, don’t bother restoring values.</span><br><span class="line">jalr x0, 0(x1) // content in x1 do not change, so ld is not needed.</span><br><span class="line"></span><br><span class="line">先看看传进来的参数如何吧。我们用一个 temp x5 来存储 n-1 的值。</span><br><span class="line">假如 n-1 小于 0，那么 n 就小于 1，于是进入一个简单的分支。</span><br><span class="line">这个分支里我们不需要进行任何操作，直接把 1 返回到 x10 就完事了。</span><br><span class="line">至于 n？题目里说了，Argument n in x10 and result in x10，所以不需要考虑了。</span><br><span class="line">addi sp, sp, 16 这一步把栈指针恢复，之前声明的内存就成了 trash。</span><br><span class="line"></span><br><span class="line">L1:</span><br><span class="line">addi x10, x10, -1 // n = n-1 (x10) because fact(n-1) need n-1 in x10.</span><br><span class="line">jal x1, fact // call fact() </span><br><span class="line">addi x6, x10, 0 // move result of fact(n-1) to x6.</span><br><span class="line">ld x10, 0(sp) // Restore caller’s n</span><br><span class="line">ld x1, 8(sp) // Restore caller’s return address</span><br><span class="line">addi sp, sp, 16 // Pop stack</span><br><span class="line">mul x10, x10, x6  // return n * fact(n-1)</span><br><span class="line">jalr x0, 0(x1) // return</span><br><span class="line"></span><br><span class="line">如果进入递归的分支，情况就稍微复杂一些。</span><br><span class="line">首先 fact() 要求输入值在 x10 中，因此我们需要把 x10 赋值为 n-1，一会再 ld 获得 n。</span><br><span class="line">之后，调用 jal，返回 fact(n-1) 的值，在 x10 中。x1 被覆盖成了 L1 的下一个指令的地址。</span><br><span class="line">之后，用一个 temp x6 存储 fact(n-1)，再用 ld 把之前的值加载回来，一气呵成。</span><br><span class="line">最后，乘法，把 n*fact(n-1) 的值放在 x10 里。</span><br><span class="line">返回，搞定。</span><br></pre></td></tr></table></figure>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215021237.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231215032834.png" alt></p>
+<p>这些保存通常是 callee 的责任。</p>
+<hr>
+<h3><span id="stack-and-heap">Stack and Heap</span></h3><p>这个章节不是很重要，遂直接截图而不做摘抄。</p>
+<p>栈也用于存储过程的局部变量，但这些变量不适用于寄存器，例如局部数组或结构体。栈中包含过程所保存的寄存器和局部变量的段称为 <strong>过程帧</strong> 或 <strong>活动记录</strong>。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215032547.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231215032623.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215032728.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033027.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033041.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033158.png" alt></p>
+<hr>
+<h3><span id="hci">HCI</span></h3><p>这个章节同样不是很重要。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033416.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033509.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033516.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033535.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033549.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033603.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215033631.png" alt></p>
+<hr>
+<h3><span id="large-immediate-number">Large Immediate Number</span></h3><p>虽然常量通常很短并且适合 12 位字段，但有时它们也会更大。RISC-V 指令系统包括指令 load upper immediate （取立即数高位，<code>lui</code>）用于将 20 位常数加载到寄存器的第 31 位到第 12 位。将第 31 位的值复制填充到最左边 32 位，最右边的 12 位用 0 填充。例如，这条指令允许使用两条指令创建 32 位常量。<code>lui</code> 使用新的指令格式 U 型，因为其他格式不能支持如此大的常量。</p>
+<ul>
+<li>U 格式指令：<code>imm[31:12], rd, opcode</code></li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215150120.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231215150129.png" alt></p>
+<p><strong>注意</strong>：<br><img src="/IMAGES/CSAPP/Pasted%20image%2020231215151116.png" alt></p>
+<p>这段在原书中解释的是一坨。我们举个例子：例如，我们想生成一个 32 位的立即数 <code>0xFEEDA987</code>，我们需要先用 <code>lui</code> 指令把 <code>0xFEEDB</code> 加载到寄存器的高 20 位，低 20 位为 0。然后，用 <code>addi</code> 指令把 <code>0x987</code> 加到寄存器的值上，并把结果存入寄存器。</p>
+<ul>
+<li>这是因为 <code>0x987</code> 是一个负数，它在加法运算时会被符号拓展成 <code>0xFFFFF987</code>，因此我们需要给 20 的立即数一个 +1 操作（FFFFF+1=00000）</li>
+</ul>
+<p>除此之外，RISC-V 还有 <code>auipc</code> 指令（Add Upper Immediate to PC），用于将一个无符号的立即数扩展到 32 位并与当前 PC（程序计数器）的上半部分相加，然后将结果存储到目标寄存器中。这主要用于生成全局地址，格式为：<code>auipc rd, imm</code>，过程为 <code>rd = PC + sext(imm[31:12])</code>，其中 <code>sext</code> 表示符号扩展。</p>
+<p>例如，如果有以下的 RISC-V 汇编代码：<code>auipc x1, 0x12345</code></p>
+<p>这将把 <code>0x12345 &lt;&lt; 12</code> 的值加到当前 PC 的上半部分，然后将结果存储到寄存器 <code>x1</code> 中。这个指令用于生成一个全局地址，通常在进行全局变量或程序中的全局跳转时使用。</p>
+<p>需要注意的是，<code>auipc</code> 指令仅修改目标寄存器的上半部分，而不影响下半部分。通常，<code>auipc</code> 指令会与其他指令一起使用，例如 <code>lui</code> 指令，以生成完整的 32位地址。</p>
+<hr>
+<h3><span id="addressing">Addressing</span></h3><p>RISC-V 分支指令使用称为 SB 型的 RISC-V 指令格式。这种格式可以表示从 -4096 到 4094 的分支地址，以 2 的倍数表示。由于最近的一些原因，它只能跳转到偶数地址。SB 型格式包括一个 7 位操作码、一个 3 位功能码、两个 5 位的寄存器操作数和一个 12 位地址立即数。该地址使用特殊的编码方式，简化了数据通路设计，但使组装变得复杂。<code>bne x10, x11, 2000</code> 这条指令可以组装为这种形式：</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215152903.png" alt><br>无条件跳转 — 链接指令 <code>jal</code> 是唯一使用 UJ 型格式的指令。该指令由一个 7 位操作码、一个 5 位目标寄存器操作数（rd）和一个 20 位地址立即数组成。链接地址，即 <code>jal</code> 之后的指令的地址，被写入 rd 中。与 SB 型格式一样，UJ 型格式的地址操作数使用特殊的立即数编码方式，它不能编码奇数地址。所以 <code>jal x0, 2000</code> 被组装为这种格式：</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215153202.png" alt></p>
+<p>如果程序的地址必须适合这个 20 位字段，对于今天的需求来说太小，另一种方法是指定一个与分支地址偏移量相加的寄存器，以便分支指令可以按如下来计算：</p>
+<script type="math/tex; mode=display">
+\text { 程序计数器 }=\text { 寄存器内容 }+ \text { 分支地址偏移量 }</script><p>由于 PC 包含当前指令的地址，如果我们使用该 PC 作为寄存器，可以在距离当前指令的 $\pm\ 2^{10}$ 个字的地方分支，或者跳转到距离当前指令 $\pm\ 2^{18}$ 个字的地方。几乎所有循环和 if 语句都小于这个限制，因此 PC 是理想的选择。这种形式的寻址方式成为 <strong>PC 相对寻址</strong>。</p>
+<p>与最新的计算机一样，RISC-V 对条件分支和无条件跳转使用 PC 相对寻址，因为这些指令的目标地址可能距离分支很近。另一方面，过程调用可能需要转移超过 $2^{18}$ 个字的距离，因为不能保证被调用者接近调用者。因此。RISC-V 允许使用双指令序列来非常长距离地跳转到任何 32 位地址。</p>
+<p>由于 RISC-V 指令长度为 4 个字节，因此 RISC-V 分支指令可以设计为通过让 PC 相对偏移表示分支和目标指令之间的字数而不是字节数，以便扩展其范围。但是，<strong>RISC-V 架构师也希望支持只有 2 个字节长的指令，因此 PC 相对偏移表示分支和目标指令之间的半字数</strong>。因此，<code>jal</code> 指令中的 20 位地址字段可以编码为距当前 $\mathrm{PC} \pm 2^{19}$ 个半字或 $\pm 1 \mathrm{MiB}$ 的距离。类似地，条件分支指令中的 12 位立即数字段也是半字地址，这意味着它表示 13 位的字节地址。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215164206.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231215170959.png" alt></p>
+<ul>
+<li><code>immediate</code> 的单位是 <strong>字节</strong>。但是，由于指令对齐和压缩指令的需要，<code>immediate</code> 在计算目标地址时会被乘以2（即左移一位），使得偏移量以 <strong>2 字节（halfword）</strong> 为单位。这样，无论是标准的32位指令，还是16位的压缩指令，都可以正确地计算出目标地址。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215164244.png" alt></p>
+<hr>
+<h3><span id="synchronization">Synchronization</span></h3><p>非重点章节。这部分应该是操作系统课上着重学的。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215170709.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215170721.png" alt></p>
+<hr>
+<h3><span id="translation-and-startup">Translation and Startup</span></h3><p>非重点章节。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215171154.png" alt></p>
+<ul>
+<li>编译器将 C 程序转换为机器能理解的符号形式 —— 汇编语言程序。高级语言程序比汇编语言使用更少的代码行，因此程序员的工作效率更高。</li>
+<li>汇编器从汇编语言程序转化为目标机器语言模块。</li>
+<li>链接器将目标机器语言模块和静态库文件链接在一起，产生机器语言程序（可执行程序）。</li>
+<li>加载器将可执行程序加载到存储器的内存中。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215174603.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231215174618.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231215174639.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215174812.png" alt></p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://timmygiorno.github.io">Timmy Giorno</a>
+            <p>原文链接：<a href="https://timmygiorno.github.io/2023/10/01/20231001-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8ERISC-V/">https://timmygiorno.github.io/2023/10/01/20231001-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8ERISC-V/</a>
+            <p>发表日期：<a href="https://timmygiorno.github.io/2023/10/01/20231001-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8ERISC-V/">October 1st 2023, 3:48:24 pm</a>
+            <p>更新日期：<a href="https://timmygiorno.github.io/2023/10/01/20231001-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8ERISC-V/">December 25th 2023, 11:27:01 pm</a>
+            <p>版权声明：本文采用 <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a> 进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2023/11/03/20231103-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%AE%97%E6%9C%AF/" title="20231103-计算机的算术">
+                    <div class="nextTitle">20231103-计算机的算术</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2023/09/12/20230912-%E5%BC%BA%E9%9F%B3%E4%B8%8E%E5%8D%8A%E9%9F%B3%E4%B8%8D%E5%8D%8F%E5%92%8C%E9%9F%B3%E7%A8%8B/" title="20230912-强音与半音不协和音程">
+                    <div class="prevTitle">20230912-强音与半音不协和音程</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+        
+
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:albernttimmy@outlook.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/TimmyGiorno" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer qq" title=qq>
+                    
+                    <img class="profile-qr" src="/assets/qqqr.jpg" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="https://www.zhihu.com/people/ci-yun-shan-xiao-mian-hu" class="iconfont-archer zhihu" target="_blank" title=zhihu></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="https://www.linkedin.com/in/bingchu-zhao-47b95a238/" class="iconfont-archer linkedin" target="_blank" title=linkedin></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">A General Structure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">Hardware</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">Performance of the Computer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">RISC-V</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">Basic Operations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">Representing Instructions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">Logical Operations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.4.</span> <span class="toc-text">Conditional Operations and Loop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.5.</span> <span class="toc-text">Procedure Calling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.6.</span> <span class="toc-text">Stack and Heap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.7.</span> <span class="toc-text">HCI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.8.</span> <span class="toc-text">Large Immediate Number</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.9.</span> <span class="toc-text">Addressing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.10.</span> <span class="toc-text">Synchronization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.11.</span> <span class="toc-text">Translation and Startup</span></a></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 12
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2023 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/25</span>
+            <a class="archive-post-title" href="/2023/12/25/20231202-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">20231202-计算机的存储结构</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/26</span>
+            <a class="archive-post-title" href="/2023/11/26/20231126-%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%8E%E6%B5%81%E6%B0%B4%E7%BA%BF/">20231126-处理器与流水线</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span>
+            <a class="archive-post-title" href="/2023/11/03/20231103-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%AE%97%E6%9C%AF/">20231103-计算机的算术</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span>
+            <a class="archive-post-title" href="/2023/10/01/20231001-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8ERISC-V/">20231001-计算机体系结构与 RISC-V</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/12</span>
+            <a class="archive-post-title" href="/2023/09/12/20230912-%E5%BC%BA%E9%9F%B3%E4%B8%8E%E5%8D%8A%E9%9F%B3%E4%B8%8D%E5%8D%8F%E5%92%8C%E9%9F%B3%E7%A8%8B/">20230912-强音与半音不协和音程</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/2023/09/10/20230910-%E9%A2%84%E5%B1%9E%E5%8A%9F%E8%83%BD%E4%B8%8E%E4%B9%90%E5%8F%A5%E6%A8%A1%E5%BC%8F/">20230910-预属功能与乐句模式</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span>
+            <a class="archive-post-title" href="/2023/08/27/20230827-%E5%AF%BC%E9%9F%B3%E4%B8%83%E5%92%8C%E5%BC%A6/">20230827-导音七和弦</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/21</span>
+            <a class="archive-post-title" href="/2023/08/21/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/">20230821-主和弦与属和弦的对位扩展</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span>
+            <a class="archive-post-title" href="/2023/08/19/20230819-%E6%97%8B%E5%BE%8B%E8%8A%82%E5%A5%8F%E5%AF%B9%E5%92%8C%E5%A3%B0%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%8C%E5%B1%9E%E4%B8%83%E5%92%8C%E5%BC%A6/">20230819-旋律节奏对和声的影响，属七和弦</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span>
+            <a class="archive-post-title" href="/2023/08/18/20230818-%E6%8B%89%E4%B8%81%E8%AF%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">20230818-拉丁语的基本概念</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span>
+            <a class="archive-post-title" href="/2023/08/18/20230818-%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%8F%82%E5%8A%A0%20Kaggle%20Data%20Science%20Competition/">20230818-记第一次参加 Kaggle Data Science Competition</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span>
+            <a class="archive-post-title" href="/2023/08/17/20230817-%E8%B0%83%E6%80%A7%E6%94%AF%E6%9F%B1%E4%B8%8E%E4%B8%BB%E5%B1%9E%E5%92%8C%E5%BC%A6/">20230817-调性支柱与主属和弦</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="Computer Science">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Science
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Data Science">
+                <span class="iconfont-archer">&#xe606;</span>
+                Data Science
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Artificial Intelligence">
+                <span class="iconfont-archer">&#xe606;</span>
+                Artificial Intelligence
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Medicine">
+                <span class="iconfont-archer">&#xe606;</span>
+                Medicine
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Linguistics">
+                <span class="iconfont-archer">&#xe606;</span>
+                Linguistics
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="European Languages">
+                <span class="iconfont-archer">&#xe606;</span>
+                European Languages
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Music">
+                <span class="iconfont-archer">&#xe606;</span>
+                Music
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Music Theory">
+                <span class="iconfont-archer">&#xe606;</span>
+                Music Theory
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Harmonics">
+                <span class="iconfont-archer">&#xe606;</span>
+                Harmonics
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Architecture">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Architecture
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Assembly Language">
+                <span class="iconfont-archer">&#xe606;</span>
+                Assembly Language
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RISC-V">
+                <span class="iconfont-archer">&#xe606;</span>
+                RISC-V
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Linguistics">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Linguistics
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Music Theory">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Music Theory
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Computer Science">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Computer Science
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://timmygiorno.github.io",
+        root: siteMetaRoot,
+        author: "Timmy Giorno"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

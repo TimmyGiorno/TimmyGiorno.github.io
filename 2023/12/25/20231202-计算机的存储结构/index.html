@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="cn">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Timmy Giorno">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Timmy Giorno">
+    
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta name="description" content="武汉大学《计算机组成与设计》课程的课程笔记，使用 David Patterson 的教材书，并针对书中的一些不清晰的地方做了详尽的注解。The notes of the course Computer Composition and Design in Wuhan University. Use the textbook of David Patterson, and make detailed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="20231202-计算机的存储结构">
+<meta property="og:url" content="https://timmygiorno.github.io/2023/12/25/20231202-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="武汉大学《计算机组成与设计》课程的课程笔记，使用 David Patterson 的教材书，并针对书中的一些不清晰的地方做了详尽的注解。The notes of the course Computer Composition and Design in Wuhan University. Use the textbook of David Patterson, and make detailed">
+<meta property="og:locale">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231208231541.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216024647.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216024653.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231209163428.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231209170300.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231209171328.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231209171337.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231209175210.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231209180934.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231214002506.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231214003029.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231214003126.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216032207.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231214174941.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231214174953.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216033251.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216033258.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216033422.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216034218.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216034502.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217125244.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217125709.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217125736.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217125820.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217125936.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217125954.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217130605.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217130613.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217130727.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217130853.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217131006.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217131011.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217131150.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217131218.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217131242.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217131332.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217131342.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231217131707.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216040058.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216040401.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216144420.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216145338.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216150147.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216150250.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216150524.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216150530.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231216160126.png">
+<meta property="article:published_time" content="2023-12-25T14:23:10.000Z">
+<meta property="article:modified_time" content="2023-12-25T15:36:17.995Z">
+<meta property="article:author" content="Timmy Giorno">
+<meta property="article:tag" content="Computer Science">
+<meta property="article:tag" content="Computer Architecture">
+<meta property="article:tag" content="Assembly Language">
+<meta property="article:tag" content="RISC-V">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231208231541.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/art.ico">
+    
+    <title>20231202-计算机的存储结构 · Timmy&#39;s Personal Website</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- Google tag (gtag.js) -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>Better Call Timmy!</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">Better Call Timmy!</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">20231202-计算机的存储结构</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+    
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/1735.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                20231202-计算机的存储结构
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Science">Computer Science</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Architecture">Computer Architecture</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Assembly Language">Assembly Language</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="RISC-V">RISC-V</a>
+    
+</div>
+
+                
+                <!-- 文章字数统计 -->
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">8.9k</span>阅读时长: <span class="post-count reading-time">31 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2023/12/25</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <p>武汉大学《计算机组成与设计》课程的课程笔记，使用 David Patterson 的教材书，并针对书中的一些不清晰的地方做了详尽的注解。<br>The notes of the course <em>Computer Composition and Design</em> in Wuhan University. Use the textbook of David Patterson, and make detailed annotations for some unclear points in the book.<br><span id="more"></span></p>
+<h2><span id="why-memory-hierarchy">Why Memory Hierarchy?</span></h2><p><strong>Principle of Locality</strong>: Programs access a small proportion of their address space at any time.</p>
+<ul>
+<li>Temporal locality: Items accessed recently are likely to be accessed again soon.</li>
+<li>Spatial locality: Items near those accessed recently are likely to be accessed soon.</li>
+</ul>
+<p>我们可以利用局部性原理来构建计算机的存储系统，也称为存储层次结构（Memory Hierarchy）。存储层次结构包括不同速度和容量的多级存储。存储速度越快，价格越昂贵，但容量越小。速度越快的存储越靠近处理器；越慢的存储成本越低，离处理器越远。这样做的目的是以最低的价格为用户提供最大容量的存储，同时访问速度与最快的存储相当。</p>
+<p><strong>Memory Hierarchy</strong>:</p>
+<ul>
+<li>Store everything on disk;</li>
+<li>Copy recently accessed and nearby items from disk to smaller DRAM memory (Main memory);</li>
+<li>Copy more recently accessed (and nearby) items from DRAM to smaller SRAM memory (Cache memory attached to CPU).</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231208231541.png" alt></p>
+<ul>
+<li>在相邻两层之间进行信息交换的最小单元称为块（block）或行（line）。</li>
+<li>失效损失（miss penalty）指的是将相应的块从下层存储替换到上层存储中的时间，加上将该数据块返回给处理器的时间。</li>
+<li>如果命中率足够高，该层次化存储有效的访问时间将非常接近最上层存储，也是速度最快的存储，容量将相当于最下层存储，也是容量最大的存储。</li>
+<li>在大多数系统中，层次化存储是真实存在的。这意味着数据只有先在第 $i+1$ 层出现, 才能在第 $i$ 层出现。</li>
+</ul>
+<hr>
+<h2><span id="memory-techs">Memory Techs</span></h2><p>在当今的层次化存储中有四种主要技术。</p>
+<ul>
+<li>主存采用动态随机访问存储（Dynamic Random Access Memory, DRAM）器件实现，靠近处理器的存储层次使用静态随机访问存储（Static Random Access Memory, SRAM）器件实现。<ul>
+<li>SRAM 存储是一种<strong>存储阵列结构</strong>的<strong>简单集成电路</strong>，通常<strong>有一个读写端口</strong>。虽然读写操作的访问时间不同，但对于任意位置的数据，SRAM 的访问时间是固定的。</li>
+<li>SRAM <strong>不需要刷新电路，所以访问时间可以和处理器的时钟周期接近</strong>。为防止读操作时信息丢失，典型的 SRAM 每比特采用 6 个或 8 个晶体管来实现。在待机模式下，SRAM 只需要最小的功率来保持电荷。</li>
+</ul>
+</li>
+<li>DRAM 的访问速度慢于 SRAM，但它的每比特成本（cost per bit）也要低很多。两者的价格差主要源于 DRAM 的每比特占用面积远远小于 SRAM，因而 DRAM 能在等量的硅上实现更大的存储容量。<ul>
+<li>在 SRAM 中，只要提供电源，数值会被一直保存。而在 DRAM 中，<strong>使用电容保存电荷的方式来存储数据</strong>。采用单个晶体管来访问存储的电荷，或者读取它，或者改写它。DRAM 的每个比特仅使用单个晶体管来存储数据，它比 SRAM 的密度更高，每比特价格更低廉。<strong>由于 DRAM 在单个晶体管上存储电荷，因此不能长久保持数据，必须进行周期性的刷新</strong>。与 SRAM 相比，这也是该结构被称为动态的原因。</li>
+<li>为了刷新数据单元，我们只需要读取其中的内容并再次写回，DRAM 中的电荷可以保持几微秒。如果每一比特数据都从 DRAM 中读出再被一一写回，就必须不停进行刷新操作, 那么就会没有时间进行正常的数据访问。</li>
+<li><strong>行（row）结构</strong>有助于 DRAM 的刷新，也有助于改善性能。为提高性能，DRAM 中缓存了行数据以便重复访问。该缓冲区有点类似 SRAM：通过改变地址，可以访问缓冲区中任意位置的数据，直到换行。这个功能显著改善了访问时间，因为确定行数据的访问时间被大幅度降低。让芯片变得更宽也能改善存储带宽。</li>
+</ul>
+</li>
+<li>第三种技术称为闪存 （flash memory）。这种非易失性存储一般作为个人移动设备的二级存储。<ul>
+<li>闪存是一种电可擦除的可编程只读存储器（Electrically Erasable Programmable Read-only Memory, EEPROM）。与磁盘和 DRAM 不同，但与其他 EEPROM 技术相似，闪存的写操作会对器件本身产生磨损。为应对这种限制，大多数闪存产品都包括一个控制器，用来将发生多次写的块重新映射到较少被写的块，从而使得写操作尽量分散。该技术被称为耗损均衡（wear leveling）。</li>
+</ul>
+</li>
+<li>第四种技术是磁盘（magnetic disk），用来实现服务器上最大也是最慢的存储层次。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216024647.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216024653.png" alt></p>
+<hr>
+<h2><span id="cache">Cache</span></h2><h3><span id="cache-read">Cache Read</span></h3><p>Cache memory is on the level of the memory hierarchy <strong>closest to the CPU</strong>.</p>
+<p>以下是一个简单 cache 在响应数据访问请求前后的情况：</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231209163428.png" alt></p>
+<p>如何知道数据项是否存在于 cache 中？如果知道数据项存在于 cache 中，又该如何找到这个数据项呢？</p>
+<ul>
+<li>如果每个字能够位于 cache 中的确定位置，只要它在 cache 中，那么找到它则是很简单的。在 cache 中为每个存储中的数据字进行位置分配的最简单方式，就是基于它在存储中的地址来分配 cache 中的位置。这种 cache 结构被称为直接映射（direct mapped），这是因为每个存储地址都被直接映射到 cache 中的确定位置。</li>
+<li>几乎所有的直接映射 cache 使用下述映射方法来找到对应的数据块：<script type="math/tex; mode=display">
+(块地址)\ \text{mod} (\ \text{cache 中的数据块数量})</script></li>
+</ul>
+<p>如果 cache 的块数是 2 的幂，则取模运算很简单，只需要取地址的低 $N$ 位即可。其中 $N=\log _2$ （cache 的块数）。因此，一个 8 个数据块的 cache 使用地址的最低 3 位来查找。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231209170300.png" alt></p>
+<p>由于每个 cache 块中能够保存不同存储地址的内容，如何知道对应请求的数据字是否在 cache 中呢？我们可以在 cache 中添加一组标签（tag）和有效位（valid bit）。</p>
+<ul>
+<li>标签保存了所需的地址信息，这些信息用来确定请求字是否在 cache 中。标签中只需要保存地址的的地址信息，这些信息用来确定所需数据块是否在高位部分，这部分地址不会用来作为 cache 的索引。上图的情况，我们使用 5 位地址中的高 2 位作为标签，低 3 位作为地址的索引字段用来选择数据块。</li>
+<li>我们还需要一种方法能够判断 cache 中的数据块中是否保存有效信息。当处理器启动时，cache 中没有有效数据，标签位都是无意义的。即使在执行了许多指令后，cache 中的一些表项内容仍可能为空。因此，对于这些表项的标签可以不考虑。常用的方法就是添加有效位，用来表示该表项中是否保存有效的数据。如果该位未被置位，则对应的数据块不能使用。</li>
+<li>缓存可能是预测技术中最重要的例子。该技术依赖于局部性原理，尝试在更高的存储层次中找到所需的数据，并提供了一套机制，保证当预测错误时能够从下一级存储中找到并使用正确的数据。现代计算机的 cache 预测命中率通常在 $95 \%$ 以上。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231209171328.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231209171337.png" alt></p>
+<p>由于索引字段被用来作为访问 cache 的地址，而一个 $n$ 位的二进制数有 $2^n$ 个数值，因此直接映射 cache 的数据块总数应为 2 的幂。数据字的地址是 4 字节对齐的，每个地址的最低两位用来表示对应的字节地址（两位用来表示哪一块）。因此, 如果存储都是字对齐的，那么在访问数据字时地址的最低两位可以忽略不计。</p>
+<ul>
+<li>例：<code>0x1000, 0x1004, 0x1008, 0x10C0, 0x10C4</code> 最低的两位一直都是 <code>00</code> 没有变化。</li>
+</ul>
+<p>访问 cache 所需的所有数据, 是 cache 容量和存储地址大小的函数。这是因为 cache 中既保存了数据，也保存了标签。其中，<strong>单个数据块的大小是 4 字节，但是通常都会比它大。</strong> 对于如下情况：</p>
+<ul>
+<li>64 位地址。</li>
+<li>直接映射 cache。</li>
+<li>cache 大小为 $2^n$ 数据块，因此索引字段为 $n$ 位。</li>
+<li>数据块大小为 $2^m$ 个单字（$2^{m+2}$ 字节或 $2^{m+5}=2^m\times32$ 位 ），因此在地址中使用 $m$ 位来索引单字，使用地址的最低 2 位来索引字节。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231209175210.png" alt></p>
+<p>于是，标签字段的大小为：$64-(n+m+2)$，于是该直接映射 cache 的总容量为：</p>
+<script type="math/tex; mode=display">
+\begin{array}
+& 2^n \times(\text { 单个数据块容量 }+ \text { 标签字段大小 }+ \text { 有效位大小 }) \\
+= 2^n \times (2^m \times 32 +(64-n-m-2)+1)=2^n \times (2^m \times 32 + 63-n-m)
+\end{array}</script><p> <img src="/IMAGES/CSAPP/Pasted%20image%2020231209180934.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231214002506.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231214003029.png" alt></p>
+<p>容量更大的块可以通过挖掘空间局部性来降低失效率。随着块大小的增长，失效率通常都在下降。然而，<strong>如果单个块大小占 cache 容量的比例增加到一定程度, 失效率最终会随之上升</strong>。这是因为 cache 中可存放的块数变少了。最终，某个数据块会在它的大量数据被访问之前就被挤出 cache。另一方面，对于一个较大的数据块，块中各字之间的空间局部性也会随之降低，失效率降低带来的好处也就随之减少。</p>
+<p>如果 cache size 固定，增加 block size 一方面会加剧竞争，从而增加 miss rate；另一方面会降低字间的空间局域性，造成污染（pollution），从而低效 miss rate 下降所带来的收益。</p>
+<p>增大块容量时，另一个更严重的问题是失效损失。失效损失是从下一级存储获得数据块并加载到 cache 的时间。该时间分为两部分：访问命中的时间和数据的传输时间。很明显，除非我们改变存储系统，否则 <strong>传输时间将随着数据块容量的增大而增大。而且, 随着数据块容量的增大，失效率改善带来的收益开始降低</strong>。最终的结果是，失效损失增大引起的性能下降超过了失效率降低带来的收益，cache 性能当然随之下降。当然，如果能设计出高效的传输大数据块的存储，就可以增大数据块的容量，并得到更大的性能改善。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231214003126.png" alt></p>
+<hr>
+<h3><span id="resolve-cache-invalidation">Resolve Cache Invalidation</span></h3><p>当 cache 命中时，对处理器的控制逻辑进行修改并没有那么重要。不过，cache 失效时，则需要一些额外的工作。cache 的失效处理与两部分协同工作：一部分是处理器的控制单元；另一部分是单独的控制器，用来初始化内存访问和重填 cache。<strong>cache 的失效处理会引发流水线停顿，即停顿整个处理器来等待内存</strong>。简而言之，处理 cache 的步骤是：1. 阻塞 CPU 流水线； 2. 从下一个存储层级中将数据块取回来；3. 如果是指令 cache 失效，则重新取指令（instruction fetch）；如果是数据 cache 失效，则继续完成数据存取。</p>
+<ul>
+<li>CPI (stall) = CPI (non-memory operations) + CPI (memory operations with cache misses)</li>
+<li>CPI (non-memory operations) 是没有存储访问停顿的指令的 CPI；</li>
+<li>CPI (memory operations with cache misses) 是由于存储访问失效而引起的额外的 CPI。</li>
+</ul>
+<p>考虑如何处理指令失效，相同的方法可以方便地扩展到处理数据失效。如果一条指令访问引发了失效，那么指令寄存器的内容将被置为无效。为了将正确的指令写入 cache 中，必须能够对下一级存储发出读操作。由于程序计数器是在执行的第一个时钟周期递增，引发指令 cache 失效的指令地址就等于程序计数器的数值减 4。一旦确定了地址，就需要指导主存进行读操作。等待内存响应（因为该访问将耗费多个时钟周期），然后将含有所需指令的字写入指令 cache 中，具体步骤如下：</p>
+<ol>
+<li>将 PC 的原始值（当前 PC-4 ）发送到内存。具体来说，对于基于指令流水线的处理器，一般会在译码阶段（ID）确定下一条指令的地址，这个地址就是当前 PC 的值。由于流水线的延迟，取指令阶段（IF）的 PC 已经更新为下一条指令的地址。所以，为了获取引发失效的指令的地址，需要使用之前的 PC-4。PC-4 是因为在流水线中，取指令阶段已经提前取了下一条指令，而 PC-4 就是上一条指令的地址。</li>
+<li>对主存进行读操作，等待主存完成本次访问。</li>
+<li>写 cache 表项，将从内存获得的数据写入到该表项的数据部分，将地址的高位（来自于 ALU）写入标签字段，并将有效位置为有效。</li>
+<li>重启指令执行。这将会重新取指，本次取指将在指令 cache 中命中。与上述相比，数据访问的 cache 控制本质上是相同的。一旦失效，简单地暂停处理器，直到内存返回数据。</li>
+</ol>
+<hr>
+<h3><span id="resolve-write-operations">Resolve Write Operations</span></h3><p>对于存储指令，只把数据写入数据 cache 而不需要改变主存。完成写入 cache 的操作后，主存中的数据将和 cache 中的数据不同。在这种情况下，cache 和主存称为不一致（inconsistent）。<br>保持 cache 和主存一致的最简单方法是，<strong>总是将数据写回内存和 cache。这样的写策略称为写穿透或者写直达</strong>（write through）。写操作的另一个关键点是写失效的处理。先从主存中取来对应数据块中的数据，之后将其写入 cache 中，覆盖引发失效的数据块中的数据。同时，也会使用完整地址将数据写回主存，但是它的性能不佳。基于写穿透策略，每次的写操作都会引起写主存的操作。</p>
+<p>解决这个问题的方法之一是使用写缓冲（write buffer）。<strong>写缓冲中保存着等待写回主存的数据。数据写入 cache 的同时也写入写缓冲中，之后处理器继续执行</strong>。当写入主存的操作完成后，写缓冲中的表项将被释放。如果写缓冲满了，处理器必须停顿流水线直到写缓冲中出现空闲表项。</p>
+<ul>
+<li>如果主存写操作的速率小于处理器产生写操作的速率，多大容量的缓冲都无济于事。即使大于，还是会在写操作成簇发生时产生停顿。</li>
+</ul>
+<p>相对于写穿透或者写直达策略，另一种写策略称为写返回（write-back）。基于写返回策略，当发生写操作时，<strong>新值只被写入 cache 中，被改写的数据块在替换出 cache 时才被写到下一级存储</strong>。写返回策略能够改善性能，尤其是当处理器写操作的产生速度等于或大于主存的处理速度时。不过，写返回策略的实现比写穿透策略要复杂得多。</p>
+<ul>
+<li>脏位：一个标志比特，用来区分缓存行是否被 CPU 修改过，从而决定是否需要写回主存做同步的依据。它反映了缓存与主存的同步状态。</li>
+</ul>
+<p>再考虑写穿透 cache 中的写失效处理：</p>
+<ul>
+<li>最常见的策略是，在 cache 中为其分配一个数据块，称为写分配（write allocate）。将该数据块从内存取入 cache 中，改写该数据块中相应部分的数据，通常搭配 write back 使用；</li>
+<li>另一种策略则是，在内存中更新相应部分的数据，并不将其取入 cache。这种策略称为写不分配（no write allocate）。该策略的动机是，有时候程序需要写整个数据块，例如操作系统对某一页内存进行初始操作。在这样的情况下，初始写失效就将对应数据块取至 cache 里，这样的操作是不必要的。有些处理器允许以页为粒度来修改写分配策略。</li>
+</ul>
+<p>在写返回 cache 中实现高效的写操作比在写穿透 cache 中要复杂得多：</p>
+<ul>
+<li>写穿透 cache 中，可以在比对标签的同时就将数据写入 cache。如果标签比对不符，发生 cache 失效。由于 cache 是写穿透的，对应数据块的改写不会产生严重后果，因为主存和 cache 中的数据都是正确的。</li>
+<li>在写返回 cache 中，如果 cache 中的数据已被修改并产生 cache 失效，必须先将对应数据块写回内存。如果在处理存储指令时，在不知道 cache 是否命中之前，只是简单地改写 cache 中对应的数据块，那么可能会破坏数据块中的内容。这些内容还未及时备份到下一级存储中。<ul>
+<li>当从主存加载数据到缓存中，并对缓存中的数据进行修改后，如果这个修改过的数据块在后续的访问中被替换（cache 失效），必须先将这个被修改过的数据块写回到主存中，以保持一致性。</li>
+<li>如果在处理存储指令时直接修改缓存中的数据块，而不确认是否发生了缓存命中，可能会导致破坏缓存中的内容，因为这个数据块可能并未在缓存中，或者已经被修改。</li>
+</ul>
+</li>
+<li>因此，在写返回 cache 中，由于不能直接改写数据块，我们需要使用两个周期去处理存储指令：一个周期用来进行标签比对确认是否命中，之后再用一个周期进行真正的写操作），或者需要一个写缓冲来保存数据 —— 通过流水化操作在一个周期内高效地处理存储指令。当使用存储缓冲器时，在正常的 cache 访问周期里，处理器进行 cache 查找，同时将数据放入 store buffer 中。如果 cache 命中，在下一个无用的 cache 访问周期里把新数据从 store buffer 写入 cache 中。</li>
+<li>写返回 cache 也有写缓冲。当 cache 发生失效替换修改过的数据块时，写缓冲可以用来减少失效损失。在这种情况下，在从主存读取所需数据块时，被替换出去的修改过的数据块被放入 cache 的写返回缓冲（write-back buffer），之后再由写返回缓冲写回到主存中。如果下一个失效不会立即发生，当脏数据块被替换时，该技术可使失效损失减少一半。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216032207.png" alt></p>
+<hr>
+<h2><span id="evaluation-and-improvation-of-caches-capacity">Evaluation and Improvation of Cache’s Capacity</span></h2><p>CPU 时间可被分成 CPU 用于执行程序的时间和 CPU 用来等待访存的时间。假设 cache 命中的访问时间只是正常 CPU 执行时间的一部分，因此：</p>
+<script type="math/tex; mode=display">\mathrm{CPU}\ 时间 = (\mathrm{CPU}\ 执行的时钟周期数 + 等待存储访问的时钟周期数) \times时钟周期</script><ul>
+<li>等待存储访问的时钟周期数可以被定义为：<strong>读操作带来的停顿周期数加上写操作带来的停顿周期数</strong>。</li>
+<li>读操作带来的停顿周期数可以由每个程序的读操作次数、读操作失效率和读操作的失效代价来定义：</li>
+</ul>
+<script type="math/tex; mode=display">读操作带来的停顿周期数 =\frac{\text { 读操作数目 }}{\text { 程序 }} \times 读失效率 \times 读失效代价</script><ul>
+<li>写操作和读操作类似，只是额外增加一个加项：<strong>写缓冲满时的时钟周期</strong>。然而，由于写缓冲停顿主要依赖于写操作的密集度，而不只是它的频度，因此不可能给出一个简单的计算此类停顿的等式。幸运的是，如果系统中有一个容量合理的写缓冲且主存接收写请求的速度能够大于程序的平均写速度，那么写缓冲引起的停顿将会很少，几乎能够忽略。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231214174941.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231214174953.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231216033251.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231216033258.png" alt></p>
+<p>为了说明不论命中还是失效访问数据存储的时间都会影响性能，设计者采用平均存储访问时间（Average Memory Access Time, AMAT）作为指标来衡量不同的 cache 设计。平均存储访问时间是考虑了命中、失效以及不同访问频度的影响后的平均访存时间，定义如下：</p>
+<script type="math/tex; mode=display">
+\mathrm{AMAT}=\text { 命中时间 }+ \text { 失效率 } \times \text { 失效代价 }</script><ul>
+<li>CPU 性能提升导致 miss penalty 变得更加重要；</li>
+<li>降低基础 CPI（basic CPI）使得 memory stall cycles 占比更大；</li>
+<li>增加时钟主频（clock rate）使得 memory stall cycles 变大。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216033422.png" alt></p>
+<hr>
+<h3><span id="flexible-alternations">Flexible Alternations</span></h3><p>数据块可以存放在 cache 的任意位置，这种策略称为 <strong>全相联</strong>，即主存中的某个数据块和 cache 中的任意表项都可能有关联。在全相联 cache 中查找给定的数据块，所有的表项都必须进行比对，因为数据块可以存放在任意位置。为让比对过程更实际，每个 cache 表项都有一个比较器可以并行地进行比较。这些比较器显然增加了硬件开销，这使得全相连策略只能用于那些小容量的 cache。</p>
+<p>介于直接映射和全相联之间的组织结构称为组相联。在一个组相联 cache 中，每一个数据块可以存放的位置数量是固定的。每个数据块有 $n$ 个位置可放的组相联 cache 称为 $n$ 路组相联 cache。在一个 $n$ 路组相联 cache 中，包含有若干组，每一组包含有 $n$ 个数据块。主存中的每个数据块通过索引位映射到 cache 中对应的组，数据块可以存放在该组中的任意位置。因此，组相联 cache 将直接映射和全相联结合起来：<strong>某个数据块直接映射到某一组，之后组中的所有数据块都需要与之进行命中比对。</strong></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216034218.png" alt></p>
+<ul>
+<li>在直接映射 cache 中，主存数据块的位置为： $(数据块号)\bmod (cache\ 中的数据块数量)$</li>
+<li>在组相联 cache 中，包含主存块的组号为：$(数据块号)\bmod (cache\ 中的组数)$</li>
+<li>由于数据块可以放置在该组内的任意位置，组内所有元素的所有标签都必须被检查。在全相联 cache 中，数据块可以放置在任意位置，cache 中所有数据块的所有标签都要被检查。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216034502.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217125244.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217125709.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231217125736.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217125820.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217125936.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217125954.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231217130605.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217130613.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231217130727.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217130853.png" alt></p>
+<hr>
+<h2><span id="reliable-memory-hierarchy">Reliable Memory Hierarchy</span></h2><p><img src="/IMAGES/CSAPP/Pasted%20image%2020231217131006.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217131011.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231217131150.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217131218.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217131242.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217131332.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217131342.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231217131707.png" alt></p>
+<hr>
+<h2><span id="virtual-memory">Virtual Memory</span></h2><p>主存可以为通常由磁盘实现的辅助存储充当 cache。这种技术被称为虚拟存储。从历史上看，提出虚拟存储的主要动机有两个：</p>
+<ul>
+<li>允许在多个程序之间高效安全地共享内存，例如云计算的多个虚拟机所需的内存；</li>
+<li>消除小而受限的主存容量对程序设计造成的影响。允许单用户程序使用超出内存容量的内存。</li>
+</ul>
+<p>在编译虚拟机时，无法知道哪些虚拟机将与其他虚拟机共享存储。事实上，共享存储的虚拟机在运行时会动态变化。由于这种动态的交互作用，我们希望 <strong>将每个程序都编译到它自己的地址空间中</strong> —— 只有这个程序能访问的一系列存储位置。<strong>虚拟存储实现了将程序地址空间转换为物理地址</strong>。这种地址转换处理加强了各个程序地址空间之间的保护。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216040058.png" alt></p>
+<p>虚拟内存的第二个动机是允许单用户程序使用超出内存容量的内存。以前，如果一个程序对于存储器来说太大，程序员应该调整它。程序员将程序划分成很多段，并将这些段标记为互斥的。这些程序段在执行时由用户程序控制载入或换出，程序员确保程序在任何时候都不会访问未载入的程序段，并且载入的程序段不会超过内存的总容量。可以想象，这种责任对程序员来说是很大的负担。虚拟存储的发明就是为了将程序员从这些困境中解脱出来，它自动管理由主存（有时称为物理内存, 以区分虚拟存储）和辅助存储所代表的两级存储层次结构。</p>
+<p>虽然虚拟存储和 cache 的工作原理相同，但不同的历史根源导致它们使用的术语不同。虚拟存储块被称为页，虚拟存储失效被称为缺页失效。<strong>在虚拟存储中，处理器产生一个虚拟地址，该地址通过软硬件转换为一个物理地址，物理地址可访问主存。</strong> 这个过程被称为地址映射或地址转换。</p>
+<ul>
+<li>虚拟地址是书名，物理地址可能是该书在图书馆中的位置，也可能是图书馆的索书号。</li>
+<li>虚拟内存还通过重定位简化了执行时程序的载入。在用地址访问存储之前，重定位将程序使用的虚拟地址映射到不同的物理地址。重定位允许将程序载入主存中的任何位置，从而不需要寻找连续内存块来放置程序。</li>
+</ul>
+<p>在虚拟存储中，地址被划分为虚拟页号和页内偏移。虽然 RISC-V 有 64 位地址，但其中的高 16 位未使用，因此要映射的地址有 48 位。假定物理内存容量为 $1 \mathrm{TiB}$ 或 $2^{40}$ 字节，则需要 40 位地址。物理页号构成物理地址的高位部分。页内偏移不变，它构成物理地址的低位部分。页内偏移的位数决定页的大小。<strong>虚拟地址可寻址的页数与物理地址可寻址的页数可以不同。拥有比物理页更多数量的虚拟页是一个没有容量限制的虚拟存储的基础。</strong></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216040401.png" alt></p>
+<p>缺页失效的高成本是许多设计选择虚拟存储系统的原因。磁盘的缺页失效处理需要数百万个时钟周期。这种巨大的失效代价（主要由获得标准页大小的第一个字所花费的时间来确定）导致了设计虚拟存储系统时的几个关键决策：</p>
+<ul>
+<li>页应该足够大以分摊长访问时间。目前典型的页大小从 $4 \mathrm{KiB}$ 到 $64 \mathrm{KiB}$ 不等。</li>
+<li>能降低缺页失效率的组织结构很有吸引力。这里使用的主要技术是允许存储中的页以全相联方式放置。</li>
+<li>缺页失效可以由软件处理，因为与磁盘访问时间相比，这样的开销将很小。此外，软件可以用巧妙的算法来选择如何放置页面，只要失效率减少很小一部分就足以弥补算法的开销。</li>
+<li>写穿透策略对于虚拟存储不合适，因为写入时间过长。相反，虚拟存储系统采用写回策略。</li>
+</ul>
+<hr>
+<h3><span id="store-and-search-of-pages">Store and Search of Pages</span></h3><p>由于缺页失效的代价非常高，设计人员通过优化页的放置来降低缺页失效频率。如果允许一个虚拟页映射到任何一个物理页，那么在发生缺页失效时, 操作系统可以选择任意一个页进行替换。例如，操作系统可以使用复杂的算法和复杂的数据结构来跟踪页面使用情况，来选择在较长一段时间内不会被用到的页。使用先进而灵活的替换策略降低了缺页失效率，并简化了全相联方式下页的放置。</p>
+<p>全相联映射的困难在于项的定位，全部进行检索是不切实际的。在虚拟存储系统中，我们使用一个索引主存的表来定位页；这个结构称为页表，它被存在主存中。页表使用虚拟地址中的页号作为索引，找到相应的物理页号。每个程序都有自己的页表，它将程序的虚拟地址空间映射到主存。</p>
+<ul>
+<li>在图书馆类比中，页表对应于书名和图书馆位置之间的映射。</li>
+<li>为了表明页表在内存中的位置，硬件包含一个指向页表首地址的寄存器，我们称之为页表寄存器。</li>
+<li>进程的地址空间，以及它在内存中可以访问的所有数据，都由其存储在内存中的页表定义。操作系统并不保存整个页表，而是简单地载入页表寄存器来指向它想要激活的进程的页表。由于不同的进程使用相同的虚拟地址，因此每个进程都有各自的页表。操作系统负责分配物理内存并更新页表，这样不同进程的虚拟地址空间不会发生冲突。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216144420.png" alt></p>
+<hr>
+<h3><span id="failure-of-missing-page">Failure of Missing Page</span></h3><p>如果虚拟页的有效位为无效，则会发生缺页失效。操作系统获得控制。</p>
+<p>虚拟地址本身并不会立即告诉我们该页在辅助存储中的位置。回到图书馆的类比，我们无法仅依靠书名就找到图书的具体位置。而是按目录查找，获得书在书架上的位置信息，比如说图书馆的索引书号。同样，在虚拟存储系统中，我们必须跟踪记录虚拟地址空间的每一页在辅助存储中的位置。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216145338.png" alt></p>
+<p>操作系统还会创建一个数据结构用于跟踪记录使用每个物理地址的是哪些进程和哪些虚拟地址。发生缺页失效时，如果内存中的所有页都正在使用，则操作系统必须选择一页进行替换。因为我们希望尽量减少缺页失效次数，所以大多数操作系统选择它们认为近期内不会使用的页进行替换。使用过去的信息预测未来，操作系统遵循最近最少使用（LRU）替换策略。操作系统查找最近最少使用的页。被替换的页被写到辅助存储器中的交换区。</p>
+<hr>
+<h3><span id="large-vm-with-large-virtual-address-space">Large VM with large Virtual Address Space</span></h3><p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216150147.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231216150250.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216150524.png" alt><br><img src="/IMAGES/CSAPP/Pasted%20image%2020231216150530.png" alt></p>
+<hr>
+<h3><span id="tlb">TLB</span></h3><p><strong>由于页表存储在主存中，因此程序每个访存请求至少需要两次访存：第一次访存获得物理地址，第二次访存获得数据。</strong> 提高访问性能的关键在于页表的访问局部性。当使用虚拟页号进行地址转换时，它可能很快再次被用到因为对该页中字的引用同时具有时间局部性和空间局部性。</p>
+<p>现代处理器包含一个特殊的 cache 以追踪记录最近使用过的地址转换。这个特殊的地址转换 cache 通常被称为快表（TLB）。</p>
+<ul>
+<li>TLB 相当于记录目录中的一些书的位置的小纸片：我们在纸片上记录一些书的位置，并且将小纸片当成图书馆索书号的 cache，这样就不用一直在整个目录中搜索了。</li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231216160126.png" alt></p>
+<p>因为每次引用都访问 TLB 而不是页表，所以 TLB 需要包括其他状态位，例如脏位和引用位。TLB 也适用于多级页表，只需要从最后一级页表中载入物理地址和保护标签即可。</p>
+<p>每次引用时，在 TLB 中查找虚拟页号。如果命中，则使用物理页号来形成地址，相应的引用位被置位。如果处理器要执行写操作，那么脏位也会被置位。如果 TLB 发生失效，我们必须确定是缺页失效或只是 TLB 失效。如果该页在内存中，TLB 失效表明缺少该地址转换。在这种情况下，处理器可以将最后一级页表中的地址转换加载到 TLB 中，并重新访问来处理失效。如果该页不在内存中，那么 TLB 失效意味着真正的缺页失效。在这种情况下，处理器调用操作系统的例外处理。由于 TLB 的项数比主存中的页数少得多，TLB 失效比缺页失效更频繁。</p>
+<p>发生 TLB 失效并从页表中检索到失效的地址转换后，需要选择要替换的 TLB 表项。由于 TLB 表项包含引用位和脏位，所以当替换某一 TLB 表项时，需要将这些位复制回对应的页表项。这些位是 TLB 表项中唯一可修改的部分。使用写回策略 —— 在失效时将这些表项写回而不是任何写操作都写回 —— 是非常有效的，因为我们期望 TLB 失效率很低。一些系统使用其他技术来粗略估计引用位和脏位，这样在失效时无须写入 TLB，只需载入新的表项。</p>
+<p>TLB 的一些典型值可能是：</p>
+<ul>
+<li>TLB 大小：$16 \sim 512$ 个表项；</li>
+<li>块大小：$1 \sim 2$ 个页表项 (通常每个为 $4 \sim 8$ 字节)；</li>
+<li>命中时间：$0.5 \sim 1$ 个时钟周期；</li>
+<li>失效代价：$10 \sim 100$ 个时钟周期；</li>
+<li>失效率：$0.01 \% \sim 1 \%$。</li>
+</ul>
+<p>TLB 中相联度的设置非常多样。一些系统使用小的全相联 TLB，因为全相联映射的失效率较低；同时由于 TLB 很小，全相联映射的成本也不是太高。其他一些系统使用容量大的 TLB，通常其相联度较小。在全相联映射的方式下，由于硬件实现 LRU 方案成本太高，替换表项的选择就很复杂。此外。由于 TLB 失效比缺页失效更频繁，因此需要用较低的代价来处理，而不能像缺页失效那样选择一个开销大的软件算法。所以很多系统都支持随机选择替换表项。</p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://timmygiorno.github.io">Timmy Giorno</a>
+            <p>原文链接：<a href="https://timmygiorno.github.io/2023/12/25/20231202-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">https://timmygiorno.github.io/2023/12/25/20231202-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/</a>
+            <p>发表日期：<a href="https://timmygiorno.github.io/2023/12/25/20231202-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">December 25th 2023, 10:23:10 pm</a>
+            <p>更新日期：<a href="https://timmygiorno.github.io/2023/12/25/20231202-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">December 25th 2023, 11:36:17 pm</a>
+            <p>版权声明：本文采用 <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a> 进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2023/11/26/20231126-%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%8E%E6%B5%81%E6%B0%B4%E7%BA%BF/" title="20231126-处理器与流水线">
+                    <div class="prevTitle">20231126-处理器与流水线</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+        
+
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:albernttimmy@outlook.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/TimmyGiorno" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer qq" title=qq>
+                    
+                    <img class="profile-qr" src="/assets/qqqr.jpg" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="https://www.zhihu.com/people/ci-yun-shan-xiao-mian-hu" class="iconfont-archer zhihu" target="_blank" title=zhihu></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="https://www.linkedin.com/in/bingchu-zhao-47b95a238/" class="iconfont-archer linkedin" target="_blank" title=linkedin></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Why Memory Hierarchy?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">Memory Techs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">Cache</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">Cache Read</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">Resolve Cache Invalidation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.3.</span> <span class="toc-text">Resolve Write Operations</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">Evaluation and Improvation of Cache’s Capacity</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">Flexible Alternations</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">Reliable Memory Hierarchy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">Virtual Memory</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.1.</span> <span class="toc-text">Store and Search of Pages</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.2.</span> <span class="toc-text">Failure of Missing Page</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.3.</span> <span class="toc-text">Large VM with large Virtual Address Space</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.4.</span> <span class="toc-text">TLB</span></a></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 12
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2023 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/25</span>
+            <a class="archive-post-title" href="/2023/12/25/20231202-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">20231202-计算机的存储结构</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/26</span>
+            <a class="archive-post-title" href="/2023/11/26/20231126-%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%8E%E6%B5%81%E6%B0%B4%E7%BA%BF/">20231126-处理器与流水线</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span>
+            <a class="archive-post-title" href="/2023/11/03/20231103-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%AE%97%E6%9C%AF/">20231103-计算机的算术</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span>
+            <a class="archive-post-title" href="/2023/10/01/20231001-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8ERISC-V/">20231001-计算机体系结构与 RISC-V</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/12</span>
+            <a class="archive-post-title" href="/2023/09/12/20230912-%E5%BC%BA%E9%9F%B3%E4%B8%8E%E5%8D%8A%E9%9F%B3%E4%B8%8D%E5%8D%8F%E5%92%8C%E9%9F%B3%E7%A8%8B/">20230912-强音与半音不协和音程</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/2023/09/10/20230910-%E9%A2%84%E5%B1%9E%E5%8A%9F%E8%83%BD%E4%B8%8E%E4%B9%90%E5%8F%A5%E6%A8%A1%E5%BC%8F/">20230910-预属功能与乐句模式</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span>
+            <a class="archive-post-title" href="/2023/08/27/20230827-%E5%AF%BC%E9%9F%B3%E4%B8%83%E5%92%8C%E5%BC%A6/">20230827-导音七和弦</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/21</span>
+            <a class="archive-post-title" href="/2023/08/21/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/">20230821-主和弦与属和弦的对位扩展</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span>
+            <a class="archive-post-title" href="/2023/08/19/20230819-%E6%97%8B%E5%BE%8B%E8%8A%82%E5%A5%8F%E5%AF%B9%E5%92%8C%E5%A3%B0%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%8C%E5%B1%9E%E4%B8%83%E5%92%8C%E5%BC%A6/">20230819-旋律节奏对和声的影响，属七和弦</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span>
+            <a class="archive-post-title" href="/2023/08/18/20230818-%E6%8B%89%E4%B8%81%E8%AF%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">20230818-拉丁语的基本概念</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span>
+            <a class="archive-post-title" href="/2023/08/18/20230818-%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%8F%82%E5%8A%A0%20Kaggle%20Data%20Science%20Competition/">20230818-记第一次参加 Kaggle Data Science Competition</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span>
+            <a class="archive-post-title" href="/2023/08/17/20230817-%E8%B0%83%E6%80%A7%E6%94%AF%E6%9F%B1%E4%B8%8E%E4%B8%BB%E5%B1%9E%E5%92%8C%E5%BC%A6/">20230817-调性支柱与主属和弦</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="Computer Science">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Science
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Data Science">
+                <span class="iconfont-archer">&#xe606;</span>
+                Data Science
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Artificial Intelligence">
+                <span class="iconfont-archer">&#xe606;</span>
+                Artificial Intelligence
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Medicine">
+                <span class="iconfont-archer">&#xe606;</span>
+                Medicine
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Linguistics">
+                <span class="iconfont-archer">&#xe606;</span>
+                Linguistics
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="European Languages">
+                <span class="iconfont-archer">&#xe606;</span>
+                European Languages
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Music">
+                <span class="iconfont-archer">&#xe606;</span>
+                Music
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Music Theory">
+                <span class="iconfont-archer">&#xe606;</span>
+                Music Theory
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Harmonics">
+                <span class="iconfont-archer">&#xe606;</span>
+                Harmonics
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Architecture">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Architecture
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Assembly Language">
+                <span class="iconfont-archer">&#xe606;</span>
+                Assembly Language
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RISC-V">
+                <span class="iconfont-archer">&#xe606;</span>
+                RISC-V
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Linguistics">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Linguistics
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Music Theory">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Music Theory
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Computer Science">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Computer Science
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://timmygiorno.github.io",
+        root: siteMetaRoot,
+        author: "Timmy Giorno"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

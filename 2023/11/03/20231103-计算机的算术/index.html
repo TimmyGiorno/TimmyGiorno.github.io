@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="cn">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Timmy Giorno">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Timmy Giorno">
+    
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta name="description" content="武汉大学《计算机组成与设计》课程的课程笔记，使用 David Patterson 的教材书，并针对书中的一些不清晰的地方做了详尽的注解。The notes of the course Computer Composition and Design in Wuhan University. Use the textbook of David Patterson, and make detailed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="20231103-计算机的算术">
+<meta property="og:url" content="https://timmygiorno.github.io/2023/11/03/20231103-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%AE%97%E6%9C%AF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="武汉大学《计算机组成与设计》课程的课程笔记，使用 David Patterson 的教材书，并针对书中的一些不清晰的地方做了详尽的注解。The notes of the course Computer Composition and Design in Wuhan University. Use the textbook of David Patterson, and make detailed">
+<meta property="og:locale">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231211181354.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231211190448.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231211191035.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231211192933.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231211214246.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231211214253.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231211220007.png">
+<meta property="og:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231215215609.png">
+<meta property="article:published_time" content="2023-11-03T01:14:29.000Z">
+<meta property="article:modified_time" content="2023-12-25T15:30:45.250Z">
+<meta property="article:author" content="Timmy Giorno">
+<meta property="article:tag" content="Computer Science">
+<meta property="article:tag" content="Computer Architecture">
+<meta property="article:tag" content="Assembly Language">
+<meta property="article:tag" content="RISC-V">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://timmygiorno.github.io/IMAGES/CSAPP/Pasted%20image%2020231211181354.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/art.ico">
+    
+    <title>20231103-计算机的算术 · Timmy&#39;s Personal Website</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- Google tag (gtag.js) -->
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>Better Call Timmy!</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">Better Call Timmy!</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">20231103-计算机的算术</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+    
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/1735.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                20231103-计算机的算术
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Science">Computer Science</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Computer Architecture">Computer Architecture</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="Assembly Language">Assembly Language</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="RISC-V">RISC-V</a>
+    
+</div>
+
+                
+                <!-- 文章字数统计 -->
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.2k</span>阅读时长: <span class="post-count reading-time">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2023/11/03</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <p>武汉大学《计算机组成与设计》课程的课程笔记，使用 David Patterson 的教材书，并针对书中的一些不清晰的地方做了详尽的注解。<br>The notes of the course <em>Computer Composition and Design</em> in Wuhan University. Use the textbook of David Patterson, and make detailed annotations for some unclear points in the book.<br><span id="more"></span></p>
+<p>Operations on integers: </p>
+<ul>
+<li>Addition and subtraction</li>
+<li>Multiplication and division</li>
+<li>Dealing with overflow</li>
+</ul>
+<p>Floating-point real numbers:</p>
+<ul>
+<li>Representation and operations</li>
+</ul>
+<hr>
+<h2><span id="unsigned-binary-integers-and-2s-complement-signed-integers">Unsigned Binary Integers and 2s-complement Signed Integers</span></h2><p>Given an n-bit number:</p>
+<script type="math/tex; mode=display">
+x=x_{n-1} 2^{n-1}+x_{n-2} 2^{n-2}+\cdots+x_1 2^1+x_0 2^0</script><p>Range: $0$ to + $2^{n}-1$.</p>
+<ul>
+<li>Using 64 bits: 0 to +18,446,774,073,709,551,615.</li>
+</ul>
+<p>Given an n-bit number:</p>
+<script type="math/tex; mode=display">
+x=-x_{n-1} 2^{n-1}+x_{n-2} 2^{n-2}+\cdots+x_1 2^1+x_0 2^0</script><p>Range: $-2^{n – 1}$ to + $2^{n – 1}-1$.</p>
+<ul>
+<li>Bit 63 is sign bit: 1 for negative numbers, and 0 for non-negative numbers.</li>
+<li>Complement means 1 → 0, 0 → 1, then we know that:<script type="math/tex; mode=display">
+x+\overline{x}=1111...111_{2}=-1_{10} \rightarrow \overline{x} + 1 = -x</script></li>
+<li><strong>Sign Extension</strong>: Representing a number using more bits and preserve the numeric value. Usually replicate the sign bit to the left:  0000 0010 → 0000 0000 0000 0010</li>
+<li>In RISC-V instruction set: <code>lb</code>: sign-extend loaded byte; <code>lbu</code>: zero-extend loaded byte.</li>
+</ul>
+<p><strong>Hexadecimal</strong>: Base 16. Compact representation of bit strings, <strong>4 bits per hex digit</strong>.</p>
+<ul>
+<li>Example: <code>0xECA86420</code> → 1110 1100 1010 1000 0110 0100 0010 0000</li>
+</ul>
+<hr>
+<h2><span id="integer-addition">Integer Addition</span></h2><p><img src="/IMAGES/CSAPP/Pasted%20image%2020231211181354.png" alt></p>
+<p>硬件规模总是有一定限制的，比如字宽为 64 位，当运算结果超过这个限制时，就会发生溢出。</p>
+<ul>
+<li>在加法中，当不同符号的操作数相加时，不会发生溢出，因为总和一定不会大于其中任意一个操作数。由于操作数可以表示成 64 位且其总和不大于任一操作数，所以总和也一定能表示成 64 位。</li>
+<li>类似地，当相同符号的操作数相减时，也不会发生溢出。</li>
+<li>缺少第 65 位意味着当溢出发生时，符号位被结果的值占用而非结果的正确符号。由于溢出结果只可能多一位，所以只有符号位可能是错误的。因此，当两个正数相加但和为负数时，说明发生了溢出，反之亦然。这个假的和值意味着产生了向符号位的进位。</li>
+<li>无符号整数通常用于表示忽略溢出的内存地址。编译器可以轻松检查出使用分支指令的无符号溢出。如果总和小于两数任何之一，则加法溢出，如果差大于被减数，则减法溢出。</li>
+</ul>
+<p>无论数的表示形式如何，计算机的有限字长意味着算术运算可能会产生过量而无法用这种固定字长表示的运算结果，即发生溢出。虽然无符号数的溢出容易检测，但无符号数通常使用自然数做地址运算，而程序通常不需要检测地址计算的溢出，所以这些溢出总被忽略。二进制补码对检测溢出提出了更大的挑战，但仍有一些软件系统需要识别溢出，因此今天所有的计算机都支持溢出检测。</p>
+<p>在通用微处理器中不常见的一个特性是饱和操作。饱和 (saturation) 意味着当计算溢出时，结果设置为最大正数或最小负数，而不是像二进制补码运算那样采用取模计算。饱和操作可能更适用于多媒体操作。</p>
+<hr>
+<h2><span id="float-addition">Float Addition</span></h2><h3><span id="float-in-risc-v">Float in RISC-V</span></h3><p><strong>Floating Point</strong>: Representation for non-integral numbers, including very small and very large numbers.</p>
+<ul>
+<li>Like scientific notation: $\pm 1.xxxxxx_{2} \times 2^{yyyyy}$. 该计数法在小数点左边只有一个数字。科学计数法中整数部分没有前导 0 的数字称为规格化数。由于基数不是 10，这个小数点被成为二进制小数点。支持这种数的计算机运算称为浮点运算，称作 “浮点” 是因为它表示二进制小数点不固定的数字，这与整数表示法不太相同。C 语言中使用 float 来表示这些数字。</li>
+<li>Types <code>float</code> and <code>double</code> in C. <code>float</code> is single precision (32-bit) and <code>double</code> is 64-bit.</li>
+<li>优点：简化了包含浮点数的数据交换；简化了浮点运算算法；提高了可储存在字中的数据的精度。</li>
+</ul>
+<p>浮点表示的设计者必须在尾数的位数大小和指数的位数大小之间找到一个平衡，因为固定的字大小意味着若一部分增加一位，则另一部分就得减少一位，即要做精度和范围之间的权衡：增加尾数位数的大小可以提高小数精度，增加指数位数的大小可以增加数的表示范围。<strong>Good design demands good compromise.</strong></p>
+<p>下面是 RISC-V 浮点数的表示方法：</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231211190448.png" alt></p>
+<p>浮点数可以表示为：$(-1)^{\text{S}} \times \text{F} \times 2^\text{E}$，其中 F 是尾数字段表示的值，E 是指数字段表示的值。</p>
+<ul>
+<li>范围：$\ 2.0_{10} \times 10^{\pm38}$ 。</li>
+<li>浮点运算中也会发生溢出中断，即因指数太大无法在指数字段中表示出来（上溢），或非零小数是否变得小到无法表示（下溢）。</li>
+</ul>
+<p>于是，在 C 语言中引入双精度，需要一个 RISC-V 双字才能表示。指数为 11 位，尾数为 52 位。</p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231211191035.png" alt></p>
+<ul>
+<li>范围：$\ 2.0_{10} \times 10^{\pm308}$ 。</li>
+</ul>
+<p>在上溢或下溢时，有些计算机会通过引发例外（有时也称作中断）来告知问题的出现。例外或中断在本质上是一种非预期的过程调用。造成溢出的指令的地址保存在寄存器中，并且计算机会跳转到预定义的地址以调用相应的例外处理程序。中断的地址被保存下来。以便在某些情况下可以在执行纠正代码之后继续执行原程序。 RISC-V 计算机不会在上溢或下溢时引发例外，但软件可以读取浮点控制和状态寄存器（fcsr）来检测是否发生上溢或下溢。</p>
+<hr>
+<h3><span id="ieee-754-float-standard">IEEE 754 Float Standard</span></h3><p>This standard was developed in response to divergence of representations and portability issues for scientific code. Now it is almost universally adopted.</p>
+<p>为了将更多的位打包到数中，IEEE 754 让规格化二进制数的前导位 1 是隐含的。因此，在单精度下，该数实际上是 24 位长（隐含 1 和 23 位尾数），在双精度下则为 53 位长。为了更精确，我们使用术语有效位数来表示隐含的 1 加上尾数，当尾数是 23 或 52 位数时，有效位数是 24 或 53 位。由于 0 没有前导 1，因此它被赋予保留的阶码 0，以便硬件不会给它附加一个前导位 1。<br>因此 $00 \ldots 00_2$ 代表 0，其他的数就是用前面的形式，加上隐含的 1：</p>
+<script type="math/tex; mode=display">
+(-1)^{\mathrm{S}} \times(1+\text {尾数 }) \times 2^{\mathrm{E}}</script><p>其中，尾数位表示大小在 0 到 1 之间的小数，$\mathrm{E}$ 表示指数字段的值。</p>
+<p>如果将尾数的各位从左到右依次用 $\mathrm{s} 1, \mathrm{~s} 2, \mathrm{~s} 3, \cdots$ 来表示的话，则数的值为：</p>
+<script type="math/tex; mode=display">
+(-1)^{\mathrm{s}} \times\left(1+\left(\mathrm{s} 1 \times 2^{-1}\right)+\left(\mathrm{s} 2 \times 2^{-2}\right)+\left(\mathrm{s} 3 \times 2^{-3}\right)+\left(\mathrm{s} 4 \times 2^{-4}\right)+\cdots\right) \times 2^{\mathrm{E}}</script><p><img src="/IMAGES/CSAPP/Pasted%20image%2020231211192933.png" alt></p>
+<ul>
+<li>IEEE 754 的其他特征是用特殊符号来表示异常事件。例如，软件可以将结果设置为代表正负无穷的位模式，而不是除零中断。当程序员打印结果时，程序将输出一个无穷大的符号。</li>
+<li>符号 NaN 的目的是让程序员可以推迟程序中的一些测试和决定，等到方便时候再进行。</li>
+<li>符号位位于最高位可以快速判断数的正负，便于排序。</li>
+<li>把指数放在尾数前也便于排序，<strong>因为只要两个数的指数部分符号相同，那么具有更大指数的数就一定更大。</strong></li>
+<li>为了防止负指数对简化排序的挑战，IEEE 754 将最小负值数表示为 $00…00_{2}$，并将最大的正指数表示为 $11…11_{2}$，这种表示法被称为移码表示法。IEEE 规定单精度的偏移值为 127，因此指数为 -1 表示为 126。双精度的指数偏移值为 1023。</li>
+<li>单精度浮点数的表示精度为十进制小数后 6 位，双精度为后 16 位。<script type="math/tex; mode=display">
+(-1)^{\mathrm{S}} \times(1+\text {有效位数}) \times 2^{\ \mathrm{指数-偏移值}}</script></li>
+</ul>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231211214246.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231211214253.png" alt></p>
+<hr>
+<h3><span id="floating-point-addition">Floating-Point Addition</span></h3><p>Decimal Procedure:</p>
+<ol>
+<li>Align decimal points; 将指数较小的数的有效数位右移，直到其指数与较大的数相同；</li>
+<li>Add significands;</li>
+<li>Normalize result &amp; check for over/underflow;</li>
+<li>Round and renormalize if necessary. (4 bit)</li>
+</ol>
+<p><strong>Binary Example:</strong></p>
+<ol>
+<li>$1.000_{2} ×2^{–1} + –1.110_{2} ×2^{–2}$</li>
+<li>Align binary points:  $1.000_{2} ×2^{–1} + –0.111_{2} ×2^{–1}$</li>
+<li>Add significands: $0.001_{2} ×2^{–1}$</li>
+<li>Normalize result &amp; check for over/underflow: $1.000_{2} ×2^{–4}$</li>
+<li>Round: 0.0625</li>
+</ol>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231211220007.png" alt></p>
+<p><img src="/IMAGES/CSAPP/Pasted%20image%2020231215215609.png" alt></p>
+
+    </article>
+    <!-- license -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://timmygiorno.github.io">Timmy Giorno</a>
+            <p>原文链接：<a href="https://timmygiorno.github.io/2023/11/03/20231103-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%AE%97%E6%9C%AF/">https://timmygiorno.github.io/2023/11/03/20231103-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%AE%97%E6%9C%AF/</a>
+            <p>发表日期：<a href="https://timmygiorno.github.io/2023/11/03/20231103-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%AE%97%E6%9C%AF/">November 3rd 2023, 9:14:29 am</a>
+            <p>更新日期：<a href="https://timmygiorno.github.io/2023/11/03/20231103-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%AE%97%E6%9C%AF/">December 25th 2023, 11:30:45 pm</a>
+            <p>版权声明：本文采用 <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a> 进行许可</p>
+        </div>
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2023/11/26/20231126-%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%8E%E6%B5%81%E6%B0%B4%E7%BA%BF/" title="20231126-处理器与流水线">
+                    <div class="nextTitle">20231126-处理器与流水线</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2023/10/01/20231001-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8ERISC-V/" title="20231001-计算机体系结构与 RISC-V">
+                    <div class="prevTitle">20231001-计算机体系结构与 RISC-V</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+        
+
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:albernttimmy@outlook.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/TimmyGiorno" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer qq" title=qq>
+                    
+                    <img class="profile-qr" src="/assets/qqqr.jpg" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="https://www.zhihu.com/people/ci-yun-shan-xiao-mian-hu" class="iconfont-archer zhihu" target="_blank" title=zhihu></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="https://www.linkedin.com/in/bingchu-zhao-47b95a238/" class="iconfont-archer linkedin" target="_blank" title=linkedin></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Unsigned Binary Integers and 2s-complement Signed Integers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">Integer Addition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">Float Addition</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">Float in RISC-V</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">IEEE 754 Float Standard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.3.</span> <span class="toc-text">Floating-Point Addition</span></a></li></ol></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 12
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2023 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/25</span>
+            <a class="archive-post-title" href="/2023/12/25/20231202-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">20231202-计算机的存储结构</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/26</span>
+            <a class="archive-post-title" href="/2023/11/26/20231126-%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%8E%E6%B5%81%E6%B0%B4%E7%BA%BF/">20231126-处理器与流水线</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span>
+            <a class="archive-post-title" href="/2023/11/03/20231103-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E7%AE%97%E6%9C%AF/">20231103-计算机的算术</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span>
+            <a class="archive-post-title" href="/2023/10/01/20231001-%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%8ERISC-V/">20231001-计算机体系结构与 RISC-V</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/12</span>
+            <a class="archive-post-title" href="/2023/09/12/20230912-%E5%BC%BA%E9%9F%B3%E4%B8%8E%E5%8D%8A%E9%9F%B3%E4%B8%8D%E5%8D%8F%E5%92%8C%E9%9F%B3%E7%A8%8B/">20230912-强音与半音不协和音程</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span>
+            <a class="archive-post-title" href="/2023/09/10/20230910-%E9%A2%84%E5%B1%9E%E5%8A%9F%E8%83%BD%E4%B8%8E%E4%B9%90%E5%8F%A5%E6%A8%A1%E5%BC%8F/">20230910-预属功能与乐句模式</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/27</span>
+            <a class="archive-post-title" href="/2023/08/27/20230827-%E5%AF%BC%E9%9F%B3%E4%B8%83%E5%92%8C%E5%BC%A6/">20230827-导音七和弦</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/21</span>
+            <a class="archive-post-title" href="/2023/08/21/20230821-%E4%B8%BB%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B1%9E%E5%92%8C%E5%BC%A6%E7%9A%84%E5%AF%B9%E4%BD%8D%E6%89%A9%E5%B1%95/">20230821-主和弦与属和弦的对位扩展</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span>
+            <a class="archive-post-title" href="/2023/08/19/20230819-%E6%97%8B%E5%BE%8B%E8%8A%82%E5%A5%8F%E5%AF%B9%E5%92%8C%E5%A3%B0%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%8C%E5%B1%9E%E4%B8%83%E5%92%8C%E5%BC%A6/">20230819-旋律节奏对和声的影响，属七和弦</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span>
+            <a class="archive-post-title" href="/2023/08/18/20230818-%E6%8B%89%E4%B8%81%E8%AF%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">20230818-拉丁语的基本概念</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/18</span>
+            <a class="archive-post-title" href="/2023/08/18/20230818-%E8%AE%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%8F%82%E5%8A%A0%20Kaggle%20Data%20Science%20Competition/">20230818-记第一次参加 Kaggle Data Science Competition</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/17</span>
+            <a class="archive-post-title" href="/2023/08/17/20230817-%E8%B0%83%E6%80%A7%E6%94%AF%E6%9F%B1%E4%B8%8E%E4%B8%BB%E5%B1%9E%E5%92%8C%E5%BC%A6/">20230817-调性支柱与主属和弦</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="Computer Science">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Science
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Data Science">
+                <span class="iconfont-archer">&#xe606;</span>
+                Data Science
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Artificial Intelligence">
+                <span class="iconfont-archer">&#xe606;</span>
+                Artificial Intelligence
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Medicine">
+                <span class="iconfont-archer">&#xe606;</span>
+                Medicine
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Linguistics">
+                <span class="iconfont-archer">&#xe606;</span>
+                Linguistics
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="European Languages">
+                <span class="iconfont-archer">&#xe606;</span>
+                European Languages
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Music">
+                <span class="iconfont-archer">&#xe606;</span>
+                Music
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Music Theory">
+                <span class="iconfont-archer">&#xe606;</span>
+                Music Theory
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Harmonics">
+                <span class="iconfont-archer">&#xe606;</span>
+                Harmonics
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Computer Architecture">
+                <span class="iconfont-archer">&#xe606;</span>
+                Computer Architecture
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="Assembly Language">
+                <span class="iconfont-archer">&#xe606;</span>
+                Assembly Language
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="RISC-V">
+                <span class="iconfont-archer">&#xe606;</span>
+                RISC-V
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Linguistics">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Linguistics
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Music Theory">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Music Theory
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="Computer Science">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Computer Science
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://timmygiorno.github.io",
+        root: siteMetaRoot,
+        author: "Timmy Giorno"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
